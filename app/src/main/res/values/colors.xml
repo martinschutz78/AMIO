@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorPrimaryDark_Light">#388e3c</color>
+    <color name="colorPrimary_Light">#4caf50</color>
+    <color name="colorPrimaryLight_Light">#c8e6c9</color>
+    <color name="colorAccentFallbackDark_Light">#ffffc400</color>
+    <color name="colorAccent_Light">#ffffd740</color>
+    <color name="colorAccentFallbackLight_Light">#ffffe57f</color>
+    <color name="colorSelectedTab_Light">#ffffffff</color>
+    <color name="colorToolbarText_Light">#ffffffff</color>
+    <color name="colorBackground">#ffbdbdbd</color>
+    <color name="colorBackgroundNavigation">@color/background_material_light</color>
+    <color name="colorSeparationNavigation">@color/colorPrimaryDark_Light</color>
+</resources>
