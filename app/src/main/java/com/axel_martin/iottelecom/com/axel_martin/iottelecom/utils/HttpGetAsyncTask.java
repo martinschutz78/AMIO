@@ -1,6 +1,7 @@
 package com.axel_martin.iottelecom.com.axel_martin.iottelecom.utils;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -18,16 +19,14 @@ import java.io.InputStreamReader;
  */
 public class HttpGetAsyncTask extends AsyncTask<String, String, String>{
 
-    String request;
 
-    public HttpGetAsyncTask(String request){
-        this.request = request;
+    public HttpGetAsyncTask(){
     }
 
     @Override
     protected String doInBackground(String... params) {
         HttpClient client = new DefaultHttpClient();
-        HttpGet getRequest = new HttpGet(request);
+        HttpGet getRequest = new HttpGet(params[0]);
         HttpResponse response;
         String result = "";
 
@@ -50,6 +49,7 @@ public class HttpGetAsyncTask extends AsyncTask<String, String, String>{
         } catch (IOException e) {
            result = "connection failed";
         }
+        Log.d("HTTPresult", result);
         return result;
     }
 
