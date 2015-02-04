@@ -53,7 +53,7 @@ public class MainActivity extends ActionBarActivity
         HttpGetAsyncTask httpTask = new HttpGetAsyncTask();
         String result ="";
         try {
-            result = httpTask.execute("http://iotlab.telecomnancy.eu/rest/data/1/light1/last").get();
+            result = httpTask.execute("http://iotlab.telecomnancy.eu/rest/data/1/light1-temperature/last").get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
