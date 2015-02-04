@@ -10,7 +10,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.axel_martin.iottelecom.com.axel_martin.iottelecom.model.Measure;
 import com.axel_martin.iottelecom.com.axel_martin.iottelecom.utils.HttpGetAsyncTask;
+import com.axel_martin.iottelecom.com.axel_martin.iottelecom.utils.ParserAsyncTask;
+
+import java.util.concurrent.ExecutionException;
 
 
 public class MainActivity extends ActionBarActivity
@@ -47,8 +51,25 @@ public class MainActivity extends ActionBarActivity
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
         HttpGetAsyncTask httpTask = new HttpGetAsyncTask();
+        String result ="";
+        try {
+            result = httpTask.execute("http://iotlab.telecomnancy.eu/rest/data/1/light1/last").get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        ParserAsyncTask parserTask = new ParserAsyncTask();
+        parserTask.execute(result);
+        try {
+            Measure measure = parserTask.get();
+            System.out.println(measure.getData().get(0).getLabel());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
-        httpTask.execute("http://iotlab.telecomnancy.eu/rest/info/motes");
     }
 
     @Override
