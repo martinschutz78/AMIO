@@ -1,11 +1,12 @@
 package com.axel_martin.iottelecom.com.axel_martin.iottelecom.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Martin on 23/01/2015.
  */
-public class Measure {
+public class Measure implements Serializable{
     private List<Data> data;
 
     public List<Data> getData() {

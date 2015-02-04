@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.axel_martin.iottelecom.com.axel_martin.iottelecom.model.Measure;
+import com.axel_martin.iottelecom.com.axel_martin.iottelecom.model.Model;
 import com.axel_martin.iottelecom.com.axel_martin.iottelecom.utils.HttpGetAsyncTask;
 import com.axel_martin.iottelecom.com.axel_martin.iottelecom.utils.ParserAsyncTask;
 
@@ -21,6 +22,7 @@ public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     private Toolbar toolBar;
+    private Model model;
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -35,6 +37,7 @@ public class MainActivity extends ActionBarActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        model = new Model();
 
         setContentView(R.layout.toolbar_layout); //invoke the layout
 
@@ -50,25 +53,8 @@ public class MainActivity extends ActionBarActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        HttpGetAsyncTask httpTask = new HttpGetAsyncTask();
-        String result ="";
-        try {
-            result = httpTask.execute("http://iotlab.telecomnancy.eu/rest/data/1/light1-temperature/last").get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        ParserAsyncTask parserTask = new ParserAsyncTask();
-        parserTask.execute(result);
-        try {
-            Measure measure = parserTask.get();
-            System.out.println(measure.getData().get(0).getLabel());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+
+
 
     }
 
@@ -77,7 +63,7 @@ public class MainActivity extends ActionBarActivity
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction tx = fragmentManager.beginTransaction();
-        tx.replace(R.id.container, MainFragment.newInstance(position + 1)).commit();
+        tx.replace(R.id.container, MainFragment.newInstance(position + 1, model)).commit();
     }
 
     public void onSectionAttached(int number) {

@@ -10,5 +10,14 @@
     <string name="action_example">Example action</string>
     <string name="action_settings">Settings</string>
     <string name="Refresh">Refresh</string>
+    <string name="default_text">Default</string>
+    <string name="overview_motes_title">Motes</string>
+    <string name="overview_motes_id">ID</string>
+    <string name="overview_motes_type">Type</string>
+    <string name="overview_motes_ipv6">IPv6/MAC</string>
+    <string name="overview_motes_lat">Lat</string>
+    <string name="overview_motes_lon">Lon</string>
+    <string name="overview_motes_number">Number of connected motes : </string>
+
 
 </resources>

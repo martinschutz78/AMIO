@@ -1,9 +1,11 @@
 package com.axel_martin.iottelecom.com.axel_martin.iottelecom.model;
 
+import java.io.Serializable;
+
 /**
  * Created by Martin on 23/01/2015.
  */
-public class Data {
+public class Data implements Serializable{
     private long timestamp;
     private String label;
     private double value;

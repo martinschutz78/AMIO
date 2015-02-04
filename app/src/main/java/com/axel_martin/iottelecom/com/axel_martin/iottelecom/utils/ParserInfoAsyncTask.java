@@ -2,6 +2,7 @@ package com.axel_martin.iottelecom.com.axel_martin.iottelecom.utils;
 
 import android.os.AsyncTask;
 
+import com.axel_martin.iottelecom.com.axel_martin.iottelecom.model.Info;
 import com.axel_martin.iottelecom.com.axel_martin.iottelecom.model.Measure;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -12,16 +13,16 @@ import java.io.StringReader;
 /**
  * Created by Martin on 23/01/2015.
  */
-public class ParserAsyncTask extends AsyncTask<String, String, Measure> {
+public class ParserInfoAsyncTask extends AsyncTask<String, String, Info> {
 
 
     @Override
-    protected Measure doInBackground(String... params) {
-            ObjectMapper mapper = new ObjectMapper();
+    protected Info doInBackground(String... params) {
+        ObjectMapper mapper = new ObjectMapper();
 
         try {
-            Measure measure = mapper.readValue(params[0], Measure.class);
-            return measure;
+            Info info = mapper.readValue(params[0], Info.class);
+            return info;
         } catch (IOException e) {
             e.printStackTrace();
         }
