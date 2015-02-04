@@ -73,14 +73,72 @@
                         android:layout_weight="1"
                         android:text="@string/overview_motes_lon"/>
                     </TableRow>
-
             </TableLayout>
-
             </LinearLayout>
-
-
-
     </android.support.v7.widget.CardView>
 
 
+    <Space
+        android:layout_width="20px"
+        android:layout_height="20px" />
+
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:id="@+id/overview_temperature"
+        android:layout_height="wrap_content"
+        card_view:cardCornerRadius="4dp">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="4dp">
+
+            <TextView
+                android:id="@+id/overview_temperature_title"
+                android:textSize="25dp"
+                android:gravity="center"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/overview_temperature_title"
+                />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:textSize="15dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/overview_temperature_mean"
+                android:text="@string/default_text"
+                />
+
+            <TableLayout
+                android:id="@+id/overview_temperature_table"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/overview_temperature_mote"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/overview_temperature_date"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/overview_temperature_value"/>
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+        </android.support.v7.widget.CardView>
 </LinearLayout>

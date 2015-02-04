@@ -16,7 +16,10 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.axel_martin.iottelecom.com.axel_martin.iottelecom.GUI.OverviewMotesCardRow;
+import com.axel_martin.iottelecom.com.axel_martin.iottelecom.GUI.OverviewTemperatureCardRow;
+import com.axel_martin.iottelecom.com.axel_martin.iottelecom.model.Data;
 import com.axel_martin.iottelecom.com.axel_martin.iottelecom.model.Info;
+import com.axel_martin.iottelecom.com.axel_martin.iottelecom.model.JsonLabels;
 import com.axel_martin.iottelecom.com.axel_martin.iottelecom.model.Measure;
 import com.axel_martin.iottelecom.com.axel_martin.iottelecom.model.Model;
 import com.axel_martin.iottelecom.com.axel_martin.iottelecom.utils.HttpGetAsyncTask;
@@ -114,6 +117,8 @@ public class MainFragment extends Fragment {
         TextView motesTitle = (TextView) rootCard.findViewById(R.id.overview_motes_title);
         TextView motesNumber = (TextView) rootCard.findViewById(R.id.overview_motes_number);
         TableLayout motesTable = (TableLayout) rootCard.findViewById(R.id.overview_motes_table);
+        TableLayout temperatureTable = (TableLayout) rootCard.findViewById(R.id.overview_temperature_table);
+        TextView temperatureMean = (TextView) rootCard.findViewById(R.id.overview_temperature_mean);
         //motesTitle.setText("TEST");
         motesNumber.setText(getResources().getString(R.string.overview_motes_number)+" "+String.valueOf(model.getInfo().getMotesNb()));
         for(int i=0; i<model.getInfo().getSink().size();i++){
@@ -136,6 +141,26 @@ public class MainFragment extends Fragment {
                     "Sender"
             ));
         }
+        int lastIndex = model.getMeasureList().size()-1;
+        int tempValueNumber = 0;
+        double tempValueCumul = 0;
+        for(int i=0; i<model.getMeasureList().get(lastIndex).getData().size();i++){
+            Data data = model.getMeasureList().get(lastIndex).getData().get(i);
+            if(data.getLabel().equals(JsonLabels.TEMPERATURE)){
+                tempValueCumul += data.getValue();
+                tempValueNumber ++;
+                temperatureTable.addView(new OverviewTemperatureCardRow(
+                    getActivity().getApplicationContext(),
+                    data.getValue(),
+                    data.getTimestamp(),
+                    data.getMote()
+                ));
+            }
+        }
+        double mean = tempValueCumul/tempValueNumber;
+        int meanTemp  = (int) (mean*100);
+        mean = meanTemp/100;
+        temperatureMean.setText(String.valueOf(mean)+"°C");
 
 
 
