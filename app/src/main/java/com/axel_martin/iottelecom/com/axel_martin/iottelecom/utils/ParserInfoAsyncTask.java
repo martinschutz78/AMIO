@@ -2,6 +2,7 @@ package com.axel_martin.iottelecom.com.axel_martin.iottelecom.utils;
 
 import android.os.AsyncTask;
 
+import com.axel_martin.iottelecom.MainFragment;
 import com.axel_martin.iottelecom.com.axel_martin.iottelecom.model.Info;
 import com.axel_martin.iottelecom.com.axel_martin.iottelecom.model.Measure;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,6 +16,12 @@ import java.io.StringReader;
  */
 public class ParserInfoAsyncTask extends AsyncTask<String, String, Info> {
 
+    private MainFragment mainFragment;
+
+    public ParserInfoAsyncTask(MainFragment mainFragment){
+        this.mainFragment=mainFragment;
+    }
+
 
     @Override
     protected Info doInBackground(String... params) {
@@ -27,5 +34,11 @@ public class ParserInfoAsyncTask extends AsyncTask<String, String, Info> {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    protected void onPostExecute(Info info) {
+        super.onPostExecute(info);
+        mainFragment.updateInfoFinishParsing(info);
     }
 }

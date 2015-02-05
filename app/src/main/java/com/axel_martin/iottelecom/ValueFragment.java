@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +29,14 @@ import com.axel_martin.iottelecom.com.axel_martin.iottelecom.model.Model;
 import com.axel_martin.iottelecom.com.axel_martin.iottelecom.utils.HttpGetAsyncTask;
 import com.axel_martin.iottelecom.com.axel_martin.iottelecom.utils.ParserAsyncTask;
 import com.axel_martin.iottelecom.com.axel_martin.iottelecom.utils.ParserInfoAsyncTask;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 
@@ -70,7 +78,7 @@ public class ValueFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         this.inflater = inflater;
-        rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        rootView = inflater.inflate(R.layout.fragment_value, container, false);
         model = (Model) getArguments().getSerializable(ARG_MODEL);
         return rootView;
     }
@@ -90,6 +98,52 @@ public class ValueFragment extends Fragment {
     }
 
     public void setupGUI(){
+        LineChart chart = (LineChart) rootView.findViewById(R.id.chart);
 
+        /*ArrayList<Entry> entryList = new ArrayList<>();
+        Entry entry1 = new Entry(10, 1);
+        Entry entry2 = new Entry(10, 2);
+        Entry entry3 = new Entry(20, 2);
+
+        entryList.add(entry1);
+        entryList.add(entry2);
+        entryList.add(entry3);
+
+        LineDataSet dataSet = new LineDataSet(entryList, "entryOne");
+
+        ArrayList<String> exemple = new ArrayList<>();
+        exemple.add("un");
+        exemple.add("deux");
+        exemple.add("trois");
+
+        ArrayList<LineDataSet> lineDataSets = new ArrayList<>();
+        lineDataSets.add(dataSet);
+
+        LineData data = new LineData(exemple, lineDataSets);*/
+
+        ArrayList<Entry> entryList = new ArrayList<>();
+        ArrayList<String> dateList = new ArrayList<>();
+        int counter = 0;
+        //Log.d("count", String.valueOf(model.getInfo().getSender().get(0).getDatalist().size()));
+        for(int i=0; i<model.getSenderList().get(0).getDatalist().size();i++){
+            if(model.getSenderList().get(0).getDatalist().get(i).getLabel().equals(JsonLabels.TEMPERATURE)){
+                entryList.add(new Entry((float) model.getSenderList().get(0).getDatalist().get(i).getValue(),counter));
+                dateList.add(this.getDate(model.getSenderList().get(0).getDatalist().get(i).getTimestamp()));
+                counter++;
+            }
+        }
+        LineDataSet dataSet = new LineDataSet(entryList, String.valueOf(model.getSenderList().get(0).getId()));
+
+        ArrayList<LineDataSet> lineDataSets = new ArrayList<>();
+        lineDataSets.add(dataSet);
+        LineData data = new LineData(dateList, lineDataSets);
+        chart.setData(data);
+    }
+
+    private String getDate(long time) {
+        Calendar cal = Calendar.getInstance(Locale.FRANCE);
+        cal.setTimeInMillis(time);
+        String date = DateFormat.format("HH:mm:ss", cal).toString();
+        return date;
     }
 }

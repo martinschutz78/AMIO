@@ -3,6 +3,8 @@ package com.axel_martin.iottelecom.com.axel_martin.iottelecom.utils;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.axel_martin.iottelecom.MainFragment;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -19,8 +21,15 @@ import java.io.InputStreamReader;
  */
 public class HttpGetAsyncTask extends AsyncTask<String, String, String>{
 
+    public static final int DATA = 1;
+    public static final int INFO = 2;
 
-    public HttpGetAsyncTask(){
+    private MainFragment mainFragment;
+    private int type;
+
+    public HttpGetAsyncTask(MainFragment mainfrag, int type){
+        this.mainFragment=mainfrag;
+        this.type=type;
     }
 
     @Override
@@ -29,7 +38,6 @@ public class HttpGetAsyncTask extends AsyncTask<String, String, String>{
         HttpGet getRequest = new HttpGet(params[0]);
         HttpResponse response;
         String result = "";
-
         try {
             response = client.execute(getRequest);
 
@@ -51,6 +59,17 @@ public class HttpGetAsyncTask extends AsyncTask<String, String, String>{
         }
         Log.d("HTTPresult", result);
         return result;
+    }
+
+    @Override
+    protected void onPostExecute(String s) {
+        super.onPostExecute(s);
+        if(type == this.DATA){
+            mainFragment.updateDataToParse(s);
+        } else {
+            mainFragment.updateInfoToParse(s);
+        }
+
     }
 
     private static String convertStreamToString(InputStream is) {

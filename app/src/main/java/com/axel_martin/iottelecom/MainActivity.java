@@ -63,7 +63,12 @@ public class MainActivity extends ActionBarActivity
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction tx = fragmentManager.beginTransaction();
-        tx.replace(R.id.container, MainFragment.newInstance(position + 1, model)).commit();
+        if(position == 0){
+            tx.replace(R.id.container, MainFragment.newInstance(position + 1, model)).commit();
+        } else {
+            tx.replace(R.id.container, ValueFragment.newInstance(position + 1, model)).commit();
+        }
+
     }
 
     public void onSectionAttached(int number) {
