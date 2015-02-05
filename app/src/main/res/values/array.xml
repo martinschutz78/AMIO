@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="color">
+        <item>@color/yellow</item>
+        <item>@color/fuchsia</item>
+        <item>@color/red</item>
+        <item>@color/silver</item>
+        <item>@color/gray</item>
+        <item>@color/olive</item>
+        <item>@color/purple</item>
+        <item>@color/maroon</item>
+        <item>@color/aqua</item>
+        <item>@color/lime</item>
+        <item>@color/teal</item>
+        <item>@color/green</item>
+        <item>@color/blue</item>
+        <item>@color/navy</item>
+    </array>
+</resources>

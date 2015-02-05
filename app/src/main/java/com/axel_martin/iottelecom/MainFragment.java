@@ -86,6 +86,7 @@ public class MainFragment extends Fragment {
             }
         });
         model = (Model) getArguments().getSerializable(ARG_MODEL);
+        this.setRetainInstance(true);
         return rootView;
     }
 

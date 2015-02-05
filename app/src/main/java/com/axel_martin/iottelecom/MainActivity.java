@@ -21,6 +21,10 @@ import java.util.concurrent.ExecutionException;
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
+    public static final int TEMPERATURE_FRAGMENT = 2;
+    public static final int LIGHT_FRAGMENT = 3;
+    public static final int HUMIDITY_FRAGMENT = 4;
+
     private Toolbar toolBar;
     private Model model;
 
@@ -38,6 +42,7 @@ public class MainActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         model = new Model();
+
 
         setContentView(R.layout.toolbar_layout); //invoke the layout
 
@@ -64,9 +69,9 @@ public class MainActivity extends ActionBarActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction tx = fragmentManager.beginTransaction();
         if(position == 0){
-            tx.replace(R.id.container, MainFragment.newInstance(position + 1, model)).commit();
+            tx.replace(R.id.container, MainFragment.newInstance(position + 1, model)).commitAllowingStateLoss();
         } else {
-            tx.replace(R.id.container, ValueFragment.newInstance(position + 1, model)).commit();
+            tx.replace(R.id.container, ValueFragment.newInstance(position + 1, model)).commitAllowingStateLoss();
         }
 
     }

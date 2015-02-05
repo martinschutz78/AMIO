@@ -440,7 +440,7 @@ public abstract class DataSet<T extends Entry> {
     /**
      * Sets the one and ONLY color that should be used for this DataSet.
      * Internally, this recreates the colors array and adds the specified color.
-     * 
+     *
      * @param color
      */
     public void setColor(int color) {
