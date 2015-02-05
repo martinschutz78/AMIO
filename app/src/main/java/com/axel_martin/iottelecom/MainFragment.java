@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,8 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.axel_martin.iottelecom.com.axel_martin.iottelecom.GUI.OverviewHumidityCardRow;
+import com.axel_martin.iottelecom.com.axel_martin.iottelecom.GUI.OverviewLightCardRow;
 import com.axel_martin.iottelecom.com.axel_martin.iottelecom.GUI.OverviewMotesCardRow;
 import com.axel_martin.iottelecom.com.axel_martin.iottelecom.GUI.OverviewTemperatureCardRow;
 import com.axel_martin.iottelecom.com.axel_martin.iottelecom.model.Data;
@@ -41,8 +44,9 @@ public class MainFragment extends Fragment {
     private static final String ARG_MODEL = "model_arg";
 
     private View rootView;
-    private LinearLayout rootLinear;
+    private SwipeRefreshLayout rootLinear;
     private LayoutInflater inflater;
+    private SwipeRefreshLayout refreshLayout;
 
     private Model model;
 
@@ -67,8 +71,15 @@ public class MainFragment extends Fragment {
                              Bundle savedInstanceState) {
         this.inflater = inflater;
         rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        rootLinear = (LinearLayout) rootView.findViewById(R.id.overview_fragment_rootLinear);
+        rootLinear = (SwipeRefreshLayout) rootView.findViewById(R.id.overview_fragment_rootLinear);
         rootLinear.setVisibility(View.GONE);
+        rootLinear.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                setupGUI();
+                rootLinear.setRefreshing(false);
+            }
+        });
         model = (Model) getArguments().getSerializable(ARG_MODEL);
         return rootView;
     }
@@ -84,12 +95,16 @@ public class MainFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        this.setupGUI();
+    }
+
+    public void setupGUI(){
         HttpGetAsyncTask httpTask = new HttpGetAsyncTask();
         HttpGetAsyncTask httpInfoTask = new HttpGetAsyncTask();
         String result ="";
         String resultMote="";
         try {
-            result = httpTask.execute("http://iotlab.telecomnancy.eu/rest/data/1/light1-temperature/last").get();
+            result = httpTask.execute("http://iotlab.telecomnancy.eu/rest/data/1/light1-temperature-humidity/last").get();
             resultMote = httpInfoTask.execute("http://iotlab.telecomnancy.eu/rest/info/motes").get();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -113,12 +128,22 @@ public class MainFragment extends Fragment {
         ProgressBar progress = (ProgressBar) rootView.findViewById(R.id.overview_fragment_progress);
         progress.setVisibility(View.GONE);
         rootLinear.setVisibility(View.VISIBLE);
-        LinearLayout rootCard = (LinearLayout) inflater.inflate(R.layout.overview_card_layout, rootLinear);
+        SwipeRefreshLayout rootCard = (SwipeRefreshLayout) inflater.inflate(R.layout.overview_card_layout, rootLinear);
         TextView motesTitle = (TextView) rootCard.findViewById(R.id.overview_motes_title);
         TextView motesNumber = (TextView) rootCard.findViewById(R.id.overview_motes_number);
         TableLayout motesTable = (TableLayout) rootCard.findViewById(R.id.overview_motes_table);
         TableLayout temperatureTable = (TableLayout) rootCard.findViewById(R.id.overview_temperature_table);
+        TableLayout humidityTable = (TableLayout) rootCard.findViewById(R.id.overview_humidity_table);
+        TableLayout lightTable = (TableLayout) rootCard.findViewById(R.id.overview_light_table);
         TextView temperatureMean = (TextView) rootCard.findViewById(R.id.overview_temperature_mean);
+        TextView humidityMean = (TextView) rootCard.findViewById(R.id.overview_humidity_mean);
+        TextView lightMean = (TextView) rootCard.findViewById(R.id.overview_light_mean);
+
+        motesTable.removeAllViews();
+        temperatureTable.removeAllViews();
+        humidityTable.removeAllViews();
+        lightTable.removeAllViews();
+
         //motesTitle.setText("TEST");
         motesNumber.setText(getResources().getString(R.string.overview_motes_number)+" "+String.valueOf(model.getInfo().getMotesNb()));
         for(int i=0; i<model.getInfo().getSink().size();i++){
@@ -150,19 +175,58 @@ public class MainFragment extends Fragment {
                 tempValueCumul += data.getValue();
                 tempValueNumber ++;
                 temperatureTable.addView(new OverviewTemperatureCardRow(
-                    getActivity().getApplicationContext(),
-                    data.getValue(),
-                    data.getTimestamp(),
-                    data.getMote()
+                        getActivity().getApplicationContext(),
+                        data.getValue(),
+                        data.getTimestamp(),
+                        data.getMote()
                 ));
             }
         }
         double mean = tempValueCumul/tempValueNumber;
-        int meanTemp  = (int) (mean*100);
+        double meanTemp  = Math.round(mean*100);
         mean = meanTemp/100;
         temperatureMean.setText(String.valueOf(mean)+"°C");
 
+        lastIndex = model.getMeasureList().size()-1;
+        tempValueNumber = 0;
+        tempValueCumul = 0;
+        for(int i=0; i<model.getMeasureList().get(lastIndex).getData().size();i++){
+            Data data = model.getMeasureList().get(lastIndex).getData().get(i);
+            if(data.getLabel().equals(JsonLabels.HUMIDITY)){
+                tempValueCumul += data.getValue();
+                tempValueNumber ++;
+                humidityTable.addView(new OverviewHumidityCardRow(
+                        getActivity().getApplicationContext(),
+                        data.getValue(),
+                        data.getTimestamp(),
+                        data.getMote()
+                ));
+            }
+        }
+        mean = tempValueCumul/tempValueNumber;
+        meanTemp  = Math.round(mean*100);
+        mean = meanTemp/100;
+        humidityMean.setText(String.valueOf(mean)+"%");
 
-
+        lastIndex = model.getMeasureList().size()-1;
+        tempValueNumber = 0;
+        tempValueCumul = 0;
+        for(int i=0; i<model.getMeasureList().get(lastIndex).getData().size();i++){
+            Data data = model.getMeasureList().get(lastIndex).getData().get(i);
+            if(data.getLabel().equals(JsonLabels.LIGHT1)){
+                tempValueCumul += data.getValue();
+                tempValueNumber ++;
+                lightTable.addView(new OverviewLightCardRow(
+                        getActivity().getApplicationContext(),
+                        data.getValue(),
+                        data.getTimestamp(),
+                        data.getMote()
+                ));
+            }
+        }
+        mean = tempValueCumul/tempValueNumber;
+        meanTemp  = Math.round(mean*100);
+        mean = meanTemp/100;
+        lightMean.setText(String.valueOf(mean)+"lx");
     }
 }

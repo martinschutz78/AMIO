@@ -18,13 +18,14 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
-    <LinearLayout
+    <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/overview_fragment_rootLinear"
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
 
-        </LinearLayout>
+        </android.support.v4.widget.SwipeRefreshLayout>
+
 
 
 </RelativeLayout>

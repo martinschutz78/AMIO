@@ -2,9 +2,10 @@
 <resources>
 
     <string name="app_name">IoT TELECOM</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
+    <string name="title_section1">Overview</string>
+    <string name="title_section2">Temperature</string>
+    <string name="title_section3">Light</string>
+    <string name="title_section4">Humidity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
@@ -13,6 +14,8 @@
     <string name="default_text">Default</string>
     <string name="overview_motes_title">Motes</string>
     <string name="overview_temperature_title">Temperature</string>
+    <string name="overview_humidity_title">Humidity</string>
+    <string name="overview_light_title">Light</string>
     <string name="overview_motes_id">ID</string>
     <string name="overview_motes_type">Type</string>
     <string name="overview_motes_ipv6">IPv6/MAC</string>
@@ -22,6 +25,12 @@
     <string name="overview_temperature_date">Date</string>
     <string name="overview_temperature_value">Value</string>
     <string name="overview_temperature_mote">Mote</string>
+    <string name="overview_humidity_date">Date</string>
+    <string name="overview_humidity_value">Value</string>
+    <string name="overview_humidity_mote">Mote</string>
+    <string name="overview_light_date">Date</string>
+    <string name="overview_light_value">Value</string>
+    <string name="overview_light_mote">Mote</string>
 
 
 </resources>
