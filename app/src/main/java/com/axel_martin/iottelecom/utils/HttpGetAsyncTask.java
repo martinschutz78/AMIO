@@ -1,4 +1,4 @@
-package com.axel_martin.iottelecom.com.axel_martin.iottelecom.utils;
+package com.axel_martin.iottelecom.utils;
 
 import android.os.AsyncTask;
 import android.util.Log;

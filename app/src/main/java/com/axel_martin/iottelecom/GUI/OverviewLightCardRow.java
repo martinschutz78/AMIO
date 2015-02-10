@@ -1,4 +1,4 @@
-package com.axel_martin.iottelecom.com.axel_martin.iottelecom.GUI;
+package com.axel_martin.iottelecom.GUI;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -6,35 +6,29 @@ import android.text.format.DateFormat;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.axel_martin.iottelecom.R;
-
-import java.sql.Date;
 import java.util.Calendar;
 import java.util.Locale;
 
 /**
  * Created by Martin on 04/02/2015.
  */
-public class OverviewHeaderRow extends TableRow{
+public class OverviewLightCardRow extends TableRow{
 
-    private String value;
-    private String mote;
-    private String date;
+    private double value, mote;
+    private long date;
 
     private TextView valueView, dateView, moteView;
 
-    public OverviewHeaderRow(Context context) {
+    public OverviewLightCardRow(Context context, double value, long date, double mote) {
         super(context);
 
-
+        this.value=value;
+        this.date=date;
+        this.mote=mote;
 
         valueView = new TextView(context);
         dateView = new TextView(context);
         moteView = new TextView(context);
-
-        value = getResources().getString(R.string.overview_humidity_value);
-        mote = getResources().getString(R.string.overview_humidity_mote);
-        date = getResources().getString(R.string.overview_humidity_date);
 
         LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 
@@ -44,9 +38,9 @@ public class OverviewHeaderRow extends TableRow{
         dateView.setLayoutParams(params);
         moteView.setLayoutParams(params);
 
-        valueView.setText(value);
-        dateView.setText(date);
-        moteView.setText(mote);
+        valueView.setText(String.valueOf(value)+"lx");
+        dateView.setText(getDate(date));
+        moteView.setText(String.valueOf(mote));
 
 
         valueView.setTextColor(Color.BLACK);
@@ -57,5 +51,13 @@ public class OverviewHeaderRow extends TableRow{
         this.addView(dateView);
         this.addView(valueView);
 
+    }
+
+
+    private String getDate(long time) {
+        Calendar cal = Calendar.getInstance(Locale.FRANCE);
+        cal.setTimeInMillis(time);
+        String date = DateFormat.format("HH:mm:ss dd-MM-yyyy", cal).toString();
+        return date;
     }
 }

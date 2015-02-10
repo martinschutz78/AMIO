@@ -6,40 +6,21 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TableLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.axel_martin.iottelecom.com.axel_martin.iottelecom.GUI.OverviewHumidityCardRow;
-import com.axel_martin.iottelecom.com.axel_martin.iottelecom.GUI.OverviewLightCardRow;
-import com.axel_martin.iottelecom.com.axel_martin.iottelecom.GUI.OverviewMotesCardRow;
-import com.axel_martin.iottelecom.com.axel_martin.iottelecom.GUI.OverviewTemperatureCardRow;
-import com.axel_martin.iottelecom.com.axel_martin.iottelecom.model.Data;
-import com.axel_martin.iottelecom.com.axel_martin.iottelecom.model.JsonLabels;
-import com.axel_martin.iottelecom.com.axel_martin.iottelecom.model.Measure;
-import com.axel_martin.iottelecom.com.axel_martin.iottelecom.model.Model;
-import com.axel_martin.iottelecom.com.axel_martin.iottelecom.observerPattern.MyObservable;
-import com.axel_martin.iottelecom.com.axel_martin.iottelecom.observerPattern.MyObserver;
-import com.axel_martin.iottelecom.com.axel_martin.iottelecom.utils.HttpGetAsyncTask;
-import com.axel_martin.iottelecom.com.axel_martin.iottelecom.utils.ParserAsyncTask;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.axel_martin.iottelecom.model.Data;
+import com.axel_martin.iottelecom.model.Measure;
+import com.axel_martin.iottelecom.model.Model;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Observable;
-import java.util.concurrent.ExecutionException;
 
 
 public class MainActivity extends ActionBarActivity

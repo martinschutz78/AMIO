@@ -1,4 +1,4 @@
-package com.axel_martin.iottelecom.com.axel_martin.iottelecom.GUI;
+package com.axel_martin.iottelecom.GUI;
 
 import android.content.Context;
 import android.graphics.Color;

@@ -1,4 +1,4 @@
-package com.axel_martin.iottelecom.com.axel_martin.iottelecom.GUI;
+package com.axel_martin.iottelecom.GUI;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -6,7 +6,6 @@ import android.text.format.DateFormat;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import java.sql.Date;
 import java.util.Calendar;
 import java.util.Locale;
 

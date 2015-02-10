@@ -1,6 +1,5 @@
 package com.axel_martin.iottelecom;
 
-import android.app.IntentService;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -11,7 +10,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.axel_martin.iottelecom.com.axel_martin.iottelecom.model.Measure;
+import com.axel_martin.iottelecom.model.Measure;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.apache.http.HttpEntity;

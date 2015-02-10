@@ -6,34 +6,28 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.axel_martin.iottelecom.com.axel_martin.iottelecom.GUI.OverviewHeaderRow;
-import com.axel_martin.iottelecom.com.axel_martin.iottelecom.GUI.OverviewHumidityCardRow;
-import com.axel_martin.iottelecom.com.axel_martin.iottelecom.GUI.OverviewLightCardRow;
-import com.axel_martin.iottelecom.com.axel_martin.iottelecom.GUI.OverviewMotesCardRow;
-import com.axel_martin.iottelecom.com.axel_martin.iottelecom.GUI.OverviewTemperatureCardRow;
-import com.axel_martin.iottelecom.com.axel_martin.iottelecom.model.Data;
-import com.axel_martin.iottelecom.com.axel_martin.iottelecom.model.Info;
-import com.axel_martin.iottelecom.com.axel_martin.iottelecom.model.JsonLabels;
-import com.axel_martin.iottelecom.com.axel_martin.iottelecom.model.Measure;
-import com.axel_martin.iottelecom.com.axel_martin.iottelecom.model.Model;
-import com.axel_martin.iottelecom.com.axel_martin.iottelecom.utils.HttpGetAsyncTask;
-import com.axel_martin.iottelecom.com.axel_martin.iottelecom.utils.ParserAsyncTask;
-import com.axel_martin.iottelecom.com.axel_martin.iottelecom.utils.ParserInfoAsyncTask;
+import com.axel_martin.iottelecom.GUI.OverviewHeaderRow;
+import com.axel_martin.iottelecom.GUI.OverviewHumidityCardRow;
+import com.axel_martin.iottelecom.GUI.OverviewLightCardRow;
+import com.axel_martin.iottelecom.GUI.OverviewMotesCardRow;
+import com.axel_martin.iottelecom.GUI.OverviewTemperatureCardRow;
+import com.axel_martin.iottelecom.model.Data;
+import com.axel_martin.iottelecom.model.Info;
+import com.axel_martin.iottelecom.model.JsonLabels;
+import com.axel_martin.iottelecom.model.Measure;
+import com.axel_martin.iottelecom.model.Model;
+import com.axel_martin.iottelecom.utils.HttpGetAsyncTask;
+import com.axel_martin.iottelecom.utils.ParserAsyncTask;
+import com.axel_martin.iottelecom.utils.ParserInfoAsyncTask;
 
 import java.util.ArrayList;
-import java.util.Properties;
-import java.util.concurrent.ExecutionException;
 
 /**
  * A placeholder fragment containing a simple view.

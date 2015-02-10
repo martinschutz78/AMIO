@@ -1,26 +1,22 @@
 package com.axel_martin.iottelecom;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.axel_martin.iottelecom.com.axel_martin.iottelecom.model.JsonLabels;
-import com.axel_martin.iottelecom.com.axel_martin.iottelecom.model.Model;
-import com.axel_martin.iottelecom.com.axel_martin.iottelecom.observerPattern.MyObserver;
+import com.axel_martin.iottelecom.model.JsonLabels;
+import com.axel_martin.iottelecom.model.Model;
+import com.axel_martin.iottelecom.observerPattern.MyObserver;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.XLabels;
 
 import java.util.ArrayList;

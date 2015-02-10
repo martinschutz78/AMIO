@@ -1,4 +1,4 @@
-package com.axel_martin.iottelecom.com.axel_martin.iottelecom.GUI;
+package com.axel_martin.iottelecom.GUI;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -6,21 +6,20 @@ import android.text.format.DateFormat;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import java.sql.Date;
 import java.util.Calendar;
 import java.util.Locale;
 
 /**
  * Created by Martin on 04/02/2015.
  */
-public class OverviewLightCardRow extends TableRow{
+public class OverviewTemperatureCardRow extends TableRow{
 
     private double value, mote;
     private long date;
 
     private TextView valueView, dateView, moteView;
 
-    public OverviewLightCardRow(Context context, double value, long date, double mote) {
+    public OverviewTemperatureCardRow(Context context, double value, long date, double mote) {
         super(context);
 
         this.value=value;
@@ -39,7 +38,7 @@ public class OverviewLightCardRow extends TableRow{
         dateView.setLayoutParams(params);
         moteView.setLayoutParams(params);
 
-        valueView.setText(String.valueOf(value)+"lx");
+        valueView.setText(String.valueOf(value)+"°C");
         dateView.setText(getDate(date));
         moteView.setText(String.valueOf(mote));
 

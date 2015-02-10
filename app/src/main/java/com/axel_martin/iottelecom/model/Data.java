@@ -1,4 +1,4 @@
-package com.axel_martin.iottelecom.com.axel_martin.iottelecom.model;
+package com.axel_martin.iottelecom.model;
 
 import java.io.Serializable;
 

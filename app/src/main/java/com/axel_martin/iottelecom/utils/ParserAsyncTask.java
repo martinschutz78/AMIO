@@ -1,13 +1,12 @@
-package com.axel_martin.iottelecom.com.axel_martin.iottelecom.utils;
+package com.axel_martin.iottelecom.utils;
 
 import android.os.AsyncTask;
 
 import com.axel_martin.iottelecom.MainFragment;
-import com.axel_martin.iottelecom.com.axel_martin.iottelecom.model.Measure;
+import com.axel_martin.iottelecom.model.Measure;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
-import java.io.StringReader;
 
 
 /**

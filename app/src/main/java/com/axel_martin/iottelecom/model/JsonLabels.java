@@ -1,4 +1,4 @@
-package com.axel_martin.iottelecom.com.axel_martin.iottelecom.model;
+package com.axel_martin.iottelecom.model;
 
 /**
  * Created by Martin on 04/02/2015.
