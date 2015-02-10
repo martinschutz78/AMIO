@@ -1,5 +1,7 @@
 package com.axel_martin.iottelecom;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -66,6 +68,7 @@ public class DataService extends Service {
 
     public void myStartService(){
         Timer timer = new Timer();
+        createNotify();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -80,6 +83,31 @@ public class DataService extends Service {
         },
         10000,
         60000);
+    }
+
+    private void createNotify(){
+        //On créer un "gestionnaire de notification"
+        NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+
+        //On créer la notification
+        //Avec son icône et son texte défilant (optionel si l'on veut pas de texte défilant on met cet argument à null)
+        Notification.Builder started = new Notification.Builder(this)
+                .setContentTitle("IoT TELECOM Nancy")
+                .setContentText("Running background...").setSmallIcon(R.drawable.small_notification);
+
+        //Le PendingIntent c'est ce qui va nous permettre d'atteindre notre deuxième Activity
+        //ActivityNotification sera donc le nom de notre seconde Activity
+        //PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, ActivityNotification.class), 0);
+
+
+        //On ajoute un style de vibration à notre notification
+        //L'utilisateur est donc également averti par les vibrations de son téléphone
+        //Ici les chiffres correspondent à 0sec de pause, 0.2sec de vibration, 0.1sec de pause, 0.2sec de vibration, 0.1sec de pause, 0.2sec de vibration
+        //Vous pouvez bien entendu modifier ces valeurs à votre convenance
+        //started.vibrate = new long[] {0,200,100,200,100,200};
+
+        //Enfin on ajoute notre notification et son ID à notre gestionnaire de notification
+        notificationManager.notify(1, started.build());
     }
 
     public void updateData() throws ExecutionException, InterruptedException {
