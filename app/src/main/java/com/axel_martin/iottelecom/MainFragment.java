@@ -17,6 +17,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.axel_martin.iottelecom.com.axel_martin.iottelecom.GUI.OverviewHeaderRow;
 import com.axel_martin.iottelecom.com.axel_martin.iottelecom.GUI.OverviewHumidityCardRow;
 import com.axel_martin.iottelecom.com.axel_martin.iottelecom.GUI.OverviewLightCardRow;
 import com.axel_martin.iottelecom.com.axel_martin.iottelecom.GUI.OverviewMotesCardRow;
@@ -109,6 +110,7 @@ public class MainFragment extends Fragment {
         progress.setVisibility(View.VISIBLE);
         rootLinear.setVisibility(View.GONE);
         updateData();
+
     }
 
     public void updateData(){
@@ -132,7 +134,7 @@ public class MainFragment extends Fragment {
     }
 
     public void updateDataFinishParsing(Measure measure){
-        model.setMeasure(measure);
+        model.getMeasureList().add(measure);
         this.updateInfo();
     }
 
@@ -167,16 +169,18 @@ public class MainFragment extends Fragment {
                     correspondance = false;
                 }
 
-                for (int i = 0; i < model.getMeasure().getData().size(); i++) {
+            for(int w=0; w<model.getMeasureList().size();w++) {
+                for (int i = 0; i < model.getMeasureList().get(w).getData().size(); i++) {
                     for (int j = 0; j < model.getSenderList().size(); j++) {
-                        if (model.getSenderList().get(j).getIpv6() == model.getMeasure().getData().get(i).getMote()) {
+                        if (model.getSenderList().get(j).getIpv6() == model.getMeasureList().get(w).getData().get(i).getMote()) {
                             if (model.getSenderList().get(j).getDatalist() == null) {
                                 model.getSenderList().get(j).setDatalist(new ArrayList<Data>());
                             }
-                            model.getSenderList().get(j).getDatalist().add(model.getMeasure().getData().get(i));
+                            model.getSenderList().get(j).getDatalist().add(model.getMeasureList().get(w).getData().get(i));
                         }
                     }
                 }
+            }
 
 
             return null;
@@ -222,66 +226,73 @@ public class MainFragment extends Fragment {
                         "Sender"
                 ));
             }
-            int tempValueNumber = 0;
-            double tempValueCumul = 0;
-            for (int i = 0; i < model.getMeasure().getData().size(); i++) {
-                Data data = model.getMeasure().getData().get(i);
-                if (data.getLabel().equals(JsonLabels.TEMPERATURE)) {
-                    tempValueCumul += data.getValue();
-                    tempValueNumber++;
-                    temperatureTable.addView(new OverviewTemperatureCardRow(
-                            getActivity().getApplicationContext(),
-                            data.getValue(),
-                            data.getTimestamp(),
-                            data.getMote()
-                    ));
+            try {
+                int tempValueNumber = 0;
+                double tempValueCumul = 0;
+                int last = model.getMeasureList().size() - 1;
+                temperatureTable.addView(new OverviewHeaderRow(getActivity().getApplicationContext()));
+                for (int i = 0; i < model.getMeasureList().get(last).getData().size(); i++) {
+                    Data data = model.getMeasureList().get(last).getData().get(i);
+                    if (data.getLabel().equals(JsonLabels.TEMPERATURE)) {
+                        tempValueCumul += data.getValue();
+                        tempValueNumber++;
+                        temperatureTable.addView(new OverviewTemperatureCardRow(
+                                getActivity().getApplicationContext(),
+                                data.getValue(),
+                                data.getTimestamp(),
+                                data.getMote()
+                        ));
+                    }
                 }
-            }
-            double mean = tempValueCumul / tempValueNumber;
-            double meanTemp = Math.round(mean * 100);
-            mean = meanTemp / 100;
-            temperatureMean.setText(String.valueOf(mean) + "°C");
+                double mean = tempValueCumul / tempValueNumber;
+                double meanTemp = Math.round(mean * 100);
+                mean = meanTemp / 100;
+                temperatureMean.setText(String.valueOf(mean) + "°C");
 
-            tempValueNumber = 0;
-            tempValueCumul = 0;
-            for (int i = 0; i < model.getMeasure().getData().size(); i++) {
-                Data data = model.getMeasure().getData().get(i);
-                if (data.getLabel().equals(JsonLabels.HUMIDITY)) {
-                    tempValueCumul += data.getValue();
-                    tempValueNumber++;
-                    humidityTable.addView(new OverviewHumidityCardRow(
-                            getActivity().getApplicationContext(),
-                            data.getValue(),
-                            data.getTimestamp(),
-                            data.getMote()
-                    ));
+                tempValueNumber = 0;
+                tempValueCumul = 0;
+                humidityTable.addView(new OverviewHeaderRow(getActivity().getApplicationContext()));
+                for (int i = 0; i < model.getMeasureList().get(last).getData().size(); i++) {
+                    Data data = model.getMeasureList().get(last).getData().get(i);
+                    if (data.getLabel().equals(JsonLabels.HUMIDITY)) {
+                        tempValueCumul += data.getValue();
+                        tempValueNumber++;
+                        humidityTable.addView(new OverviewHumidityCardRow(
+                                getActivity().getApplicationContext(),
+                                data.getValue(),
+                                data.getTimestamp(),
+                                data.getMote()
+                        ));
+                    }
                 }
-            }
-            mean = tempValueCumul / tempValueNumber;
-            meanTemp = Math.round(mean * 100);
-            mean = meanTemp / 100;
-            humidityMean.setText(String.valueOf(mean) + "%");
+                mean = tempValueCumul / tempValueNumber;
+                meanTemp = Math.round(mean * 100);
+                mean = meanTemp / 100;
+                humidityMean.setText(String.valueOf(mean) + "%");
 
-            tempValueNumber = 0;
-            tempValueCumul = 0;
-            for (int i = 0; i < model.getMeasure().getData().size(); i++) {
-                Data data = model.getMeasure().getData().get(i);
-                if (data.getLabel().equals(JsonLabels.LIGHT1)) {
-                    tempValueCumul += data.getValue();
-                    tempValueNumber++;
-                    lightTable.addView(new OverviewLightCardRow(
-                            getActivity().getApplicationContext(),
-                            data.getValue(),
-                            data.getTimestamp(),
-                            data.getMote()
-                    ));
+                tempValueNumber = 0;
+                tempValueCumul = 0;
+                lightTable.addView(new OverviewHeaderRow(getActivity().getApplicationContext()));
+                for (int i = 0; i < model.getMeasureList().get(last).getData().size(); i++) {
+                    Data data = model.getMeasureList().get(last).getData().get(i);
+                    if (data.getLabel().equals(JsonLabels.LIGHT1)) {
+                        tempValueCumul += data.getValue();
+                        tempValueNumber++;
+                        lightTable.addView(new OverviewLightCardRow(
+                                getActivity().getApplicationContext(),
+                                data.getValue(),
+                                data.getTimestamp(),
+                                data.getMote()
+                        ));
+                    }
                 }
+                mean = tempValueCumul / tempValueNumber;
+                meanTemp = Math.round(mean * 100);
+                mean = meanTemp / 100;
+                lightMean.setText(String.valueOf(mean) + "lx");
+            } catch (Exception e){
+                e.printStackTrace();
             }
-            mean = tempValueCumul / tempValueNumber;
-            meanTemp = Math.round(mean * 100);
-            mean = meanTemp / 100;
-            lightMean.setText(String.valueOf(mean) + "lx");
-
 
             progress.setVisibility(View.GONE);
             rootLinear.setVisibility(View.VISIBLE);

@@ -1,25 +1,49 @@
 package com.axel_martin.iottelecom;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TableLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.axel_martin.iottelecom.com.axel_martin.iottelecom.GUI.OverviewHumidityCardRow;
+import com.axel_martin.iottelecom.com.axel_martin.iottelecom.GUI.OverviewLightCardRow;
+import com.axel_martin.iottelecom.com.axel_martin.iottelecom.GUI.OverviewMotesCardRow;
+import com.axel_martin.iottelecom.com.axel_martin.iottelecom.GUI.OverviewTemperatureCardRow;
+import com.axel_martin.iottelecom.com.axel_martin.iottelecom.model.Data;
+import com.axel_martin.iottelecom.com.axel_martin.iottelecom.model.JsonLabels;
 import com.axel_martin.iottelecom.com.axel_martin.iottelecom.model.Measure;
 import com.axel_martin.iottelecom.com.axel_martin.iottelecom.model.Model;
+import com.axel_martin.iottelecom.com.axel_martin.iottelecom.observerPattern.MyObservable;
+import com.axel_martin.iottelecom.com.axel_martin.iottelecom.observerPattern.MyObserver;
 import com.axel_martin.iottelecom.com.axel_martin.iottelecom.utils.HttpGetAsyncTask;
 import com.axel_martin.iottelecom.com.axel_martin.iottelecom.utils.ParserAsyncTask;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Observable;
 import java.util.concurrent.ExecutionException;
 
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks{
 
     public static final int TEMPERATURE_FRAGMENT = 2;
     public static final int LIGHT_FRAGMENT = 3;
@@ -27,6 +51,24 @@ public class MainActivity extends ActionBarActivity
 
     private Toolbar toolBar;
     private Model model;
+
+    private ValueFragment valueFragment;
+    private FragmentManager fragmentManager;
+
+
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle = intent.getExtras();
+            model.setMeasureList((ArrayList<Measure>) bundle.getSerializable("RESULT"));
+            Log.d("MEASURELIST", String.valueOf(model.getMeasureList().size()));
+            UpdateTask updateTask = new UpdateTask();
+            updateTask.execute();
+            Intent intent2 = new Intent("com.axel_martin.iottelecom.MainActivity");
+            sendBroadcast(intent2);
+        }
+    };
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -58,20 +100,40 @@ public class MainActivity extends ActionBarActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
+        Intent serviceIntent = new Intent(this, DataService.class);
+        startService(serviceIntent);
 
 
 
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(receiver, new IntentFilter("com.axel_martin.iottelecom"));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
+    }
+
+    @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager = getSupportFragmentManager();
         FragmentTransaction tx = fragmentManager.beginTransaction();
         if(position == 0){
             tx.replace(R.id.container, MainFragment.newInstance(position + 1, model)).commitAllowingStateLoss();
         } else {
-            tx.replace(R.id.container, ValueFragment.newInstance(position + 1, model)).commitAllowingStateLoss();
+            tx.replace(R.id.container,valueFragment.newInstance(position + 1, model)).commitAllowingStateLoss();
+            try {
+                valueFragment.update();
+            }catch (Exception e){
+
+            }
+
         }
 
     }
@@ -130,6 +192,64 @@ public class MainActivity extends ActionBarActivity
     public ActionBar getSupportActionBar() {
         // TODO Auto-generated method stub
         return super.getSupportActionBar();
+    }
+
+    private class UpdateTask extends AsyncTask<String, String, String> {
+
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                for (int i = 0; i < model.getInfo().getSender().size(); i++) {
+                    boolean correspondance = false;
+                    for (int j = 0; j < model.getSenderList().size(); j++) {
+                        if (model.getSenderList().get(j).getId() == model.getInfo().getSender().get(i).getId()) {
+                            model.getSenderList().get(j).setIpv6(model.getInfo().getSender().get(i).getIpv6());
+                            model.getSenderList().get(j).setLat(model.getInfo().getSender().get(i).getLat());
+                            model.getSenderList().get(j).setLon(model.getInfo().getSender().get(i).getLon());
+                            model.getSenderList().get(j).setMac(model.getInfo().getSender().get(i).getMac());
+                            correspondance = true;
+                            break;
+                        } else {
+                            correspondance = false;
+                        }
+                    }
+                    if (!correspondance) {
+                        model.getSenderList().add(model.getInfo().getSender().get(i));
+                    }
+                    correspondance = false;
+                }
+                for(int w=0; w<model.getMeasureList().size();w++) {
+                    for (int i = 0; i < model.getMeasureList().get(w).getData().size(); i++) {
+                        for (int j = 0; j < model.getSenderList().size(); j++) {
+                            if (model.getSenderList().get(j).getIpv6() == model.getMeasureList().get(w).getData().get(i).getMote()) {
+                                if (model.getSenderList().get(j).getDatalist() == null) {
+                                    model.getSenderList().get(j).setDatalist(new ArrayList<Data>());
+                                }
+                                model.getSenderList().get(j).getDatalist().add(model.getMeasureList().get(w).getData().get(i));
+                            }
+                        }
+                    }
+                }
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            for(int i=0; i<fragmentManager.getFragments().size();i++){
+                if(fragmentManager.getFragments().get(i) instanceof ValueFragment){
+                    ((ValueFragment) fragmentManager.getFragments().get(i)).update();
+                    Log.d("Update", "Update valueFrag");
+                }
+            }
+
+        }
     }
 
 }

@@ -7,12 +7,14 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.axel_martin.iottelecom.com.axel_martin.iottelecom.model.JsonLabels;
 import com.axel_martin.iottelecom.com.axel_martin.iottelecom.model.Model;
+import com.axel_martin.iottelecom.com.axel_martin.iottelecom.observerPattern.MyObserver;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -28,7 +30,7 @@ import java.util.Locale;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class ValueFragment extends Fragment {
+public class ValueFragment extends Fragment implements MyObserver {
     /**
      * The fragment argument representing the section number for this
      * fragment.
@@ -43,7 +45,19 @@ public class ValueFragment extends Fragment {
 
     private int sectionNumber;
 
+    private ArrayList<LineDataSet> lineDataSets;
+
+    private LineDataSet dataSet;
+    int counter = 0;
+    int generalCounter = 0;
+    private ArrayList<String> dateList;
+    private String toTest = "";
+
     private Model model;
+
+    private LineData data;
+
+    private LineChart chart;
 
     /**
      * Returns a new instance of this fragment for the given section
@@ -86,8 +100,8 @@ public class ValueFragment extends Fragment {
         this.setupGUI();
     }
 
-    public void setupGUI(){
-        String toTest = "";
+    public void setupGUI() throws NullPointerException{
+
 
         switch (sectionNumber){
             case MainActivity.TEMPERATURE_FRAGMENT:
@@ -101,32 +115,39 @@ public class ValueFragment extends Fragment {
                 break;
         }
 
-        LineChart chart = (LineChart) rootView.findViewById(R.id.chart);
+        chart = (LineChart) rootView.findViewById(R.id.chart);
 
         chart.animateX(500);
 
-        ArrayList<LineDataSet> lineDataSets = new ArrayList<>();
-        ArrayList<String> dateList = new ArrayList<>();
+        lineDataSets = new ArrayList<>();
+        dateList = new ArrayList<>();
         boolean isFirst = true;
         for(int j=0; j<model.getSenderList().size();j++) {
 
             ArrayList<Entry> entryList = new ArrayList<>();
 
+            counter = 0;
 
-            int counter = 0;
 
             for (int i = 0; i < model.getSenderList().get(j).getDatalist().size(); i++) {
                 if (model.getSenderList().get(j).getDatalist().get(i).getLabel().equals(toTest)) {
-                    entryList.add(new Entry((float) model.getSenderList().get(j).getDatalist().get(i).getValue(), counter));
+                    entryList.add(new Entry((float) model.getSenderList().get(j).getDatalist().get(i).getValue(),
+                            counter));
+                    /*if(model.getSenderList().get(j).getDatalist().get(i).getTimestamp()<model.getSenderList().get(j).getDatalist().get(0).getTimestamp()){
+                        entryList.remove(0);
+                        //dateList.remove(0);
+
+                    }*/
                     if(isFirst){
                         dateList.add(this.getDate(model.getSenderList().get(j).getDatalist().get(i).getTimestamp()));
+                        generalCounter++;
                     }
-
                     counter++;
                 }
             }
+
             isFirst = false;
-            LineDataSet dataSet = new LineDataSet(entryList, String.valueOf(model.getSenderList().get(j).getId()));
+            dataSet = new LineDataSet(entryList, String.valueOf(model.getSenderList().get(j).getId()));
             dataSet.setCircleSize(10);
             dataSet.setLineWidth(5);
             int[] colors = getResources().getIntArray(R.array.color);
@@ -138,7 +159,7 @@ public class ValueFragment extends Fragment {
                 lineDataSets.get(i).setCircleColor(colors[i % lineDataSets.size()]);
             }
         }
-        LineData data = new LineData(dateList, lineDataSets);
+        data = new LineData(dateList, lineDataSets);
         chart.setData(data);
         chart.setTouchEnabled(true);
         chart.setScaleEnabled(true);
@@ -163,5 +184,10 @@ public class ValueFragment extends Fragment {
         cal.setTimeInMillis(time);
         String date = DateFormat.format("HH:mm:ss", cal).toString();
         return date;
+    }
+
+    @Override
+    public void update() {
+        setupGUI();
     }
 }

@@ -8,23 +8,23 @@ import java.util.ArrayList;
  */
 public class Model implements Serializable{
 
-    //private ArrayList<Measure> measureList;
+    private ArrayList<Measure> measureList;
     private Info info;
-    private Measure measure;
+    //private Measure measure;
     private ArrayList<Sender> senderList;
 
     public Model(){
-        //measureList = new ArrayList<>();
+        measureList = new ArrayList<>();
         senderList = new ArrayList<>();
     }
 
-    /*public ArrayList<Measure> getMeasureList() {
+    public ArrayList<Measure> getMeasureList() {
         return measureList;
     }
 
     public void setMeasureList(ArrayList<Measure> measureList) {
         this.measureList = measureList;
-    }*/
+    }
 
     public Info getInfo() {
         return info;
@@ -42,11 +42,11 @@ public class Model implements Serializable{
         this.senderList = senderList;
     }
 
-    public Measure getMeasure() {
+    /*public Measure getMeasure() {
         return measure;
     }
 
     public void setMeasure(Measure measure) {
         this.measure = measure;
-    }
+    }*/
 }
