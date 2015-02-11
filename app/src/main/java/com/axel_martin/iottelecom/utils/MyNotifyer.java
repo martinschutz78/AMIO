@@ -98,7 +98,14 @@ public class MyNotifyer {
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setColor(context.getResources().getColor(R.color.colorPrimary_Light))
-                .setGroup(context.getResources().getString(R.string.app_name));
+                .setGroup(context.getResources().getString(R.string.app_name))
+                .setDefaults(NotificationCompat.DEFAULT_ALL);
+//                .setDefaults(NotificationCompat.DEFAULT_VIBRATE)
+//                .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
+//                .setLights(Color.YELLOW, 3000, 3000);
+//                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+
+
 
         //Add notification and it's id to the manager
         notificationManager.notify(2, started.build());

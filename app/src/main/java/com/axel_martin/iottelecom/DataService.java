@@ -188,8 +188,10 @@ public class DataService extends Service {
 
         newMeanLumix = newMeanLumix/num;
 
+        // Debug
+        mynotifyer.createLightNotify();
+
         if (meanLumix != 0 && Math.abs(newMeanLumix - meanLumix) > LUMIX_DELTA ) {
-//        if (Math.abs(newMeanLumix - meanLumix) > LUMIX_DELTA ) {
             mynotifyer.createLightNotify();
         }
 
