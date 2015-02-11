@@ -1,7 +1,5 @@
 package com.axel_martin.iottelecom;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,12 +8,12 @@ import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
+import com.axel_martin.iottelecom.model.Data;
+import com.axel_martin.iottelecom.model.JsonLabels;
 import com.axel_martin.iottelecom.model.Measure;
-import com.axel_martin.iottelecom.utils.TerminateService;
+import com.axel_martin.iottelecom.utils.MyNotifyer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.apache.http.HttpEntity;
@@ -34,12 +32,15 @@ import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 
 /**
- * Created by Martin on 09/02/2015.
+ * @author Martin, Axel
  */
 public class DataService extends Service {
 
+    private static final double LUMIX_DELTA = 75;
+
     private ArrayList<Measure> measures;
-    private NotificationManager notificationManager;
+    private MyNotifyer mynotifyer;
+    private double meanLumix = 0;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
 
@@ -62,7 +63,7 @@ public class DataService extends Service {
     @Override
     public void onDestroy() {
         unregisterReceiver(receiver);
-        notificationManager.cancelAll();
+        mynotifyer.cancelAll();
         super.onDestroy();
     }
 
@@ -71,9 +72,9 @@ public class DataService extends Service {
         return null;
     }
 
-    public void myStartService(){
+    public void myStartService() {
         Timer timer = new Timer();
-        createNotify();
+        mynotifyer = new MyNotifyer(this);
         timer.scheduleAtFixedRate(new TimerTask() {
                                       @Override
                                       public void run() {
@@ -90,50 +91,6 @@ public class DataService extends Service {
                 60000);
     }
 
-    private void createNotify(){
-        //On créer un "gestionnaire de notification"
-        notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-
-        // Creates an explicit intent for an Activity in your app
-        Intent resultIntent = new Intent(this, MainActivity.class);
-        Intent deleteIntent = new Intent(this, TerminateService.class);
-        PendingIntent pendingIntentTerminate = PendingIntent.getBroadcast(this, 0, deleteIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        // The stack builder object will contain an artificial back stack for the
-        // started Activity.
-        // This ensures that navigating backward from the Activity leads out of
-        // your application to the Home screen.
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        // Adds the back stack for the Intent (but not the Intent itself)
-        stackBuilder.addParentStack(MainActivity.class);
-        // Adds the Intent that starts the Activity to the top of the stack
-        stackBuilder.addNextIntent(resultIntent);
-        PendingIntent resultPendingIntent =
-                stackBuilder.getPendingIntent(
-                        0,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
-
-        //On créer la notification
-        //Avec son icône et son texte défilant (optionel si l'on veut pas de texte défilant on met cet argument à null)
-        NotificationCompat.Builder started = new NotificationCompat.Builder(this)
-                .setContentTitle(getResources().getString(R.string.app_name))
-                .setContentText(getResources().getString(R.string.RunningBackground))
-                .setContentIntent(resultPendingIntent)
-                .setSmallIcon(R.drawable.small_notification)
-                //.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.large_notification))
-                .setCategory(NotificationCompat.CATEGORY_SERVICE)
-                .setPriority(NotificationCompat.PRIORITY_MIN)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setColor(getResources().getColor(R.color.colorPrimary_Light))
-                .setShowWhen(false)
-                .setOngoing(true)
-                .addAction(R.drawable.abc_ic_clear_mtrl_alpha, getResources().getString(R.string.Terminate), pendingIntentTerminate);
-
-        //Enfin on ajoute notre notification et son ID à notre gestionnaire de notification
-        notificationManager.notify(1, started.build());
-    }
-
     public void updateData() throws ExecutionException, InterruptedException {
 
         AsyncTask<String, String, Measure> parser = new AsyncTask<String, String, Measure>() {
@@ -144,6 +101,7 @@ public class DataService extends Service {
 
                 try {
                     Measure measure = mapper.readValue(params[0], Measure.class);
+                    checkLuminosity(measure);
                     return measure;
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -196,6 +154,28 @@ public class DataService extends Service {
         sendBroadcast(intent);
 
 
+    }
+
+    private void checkLuminosity(Measure measure) {
+        double newMeanLumix = 0;
+        int num = 0;
+
+        for (int i = 0; i < measure.getData().size(); i++) {
+            Data data = measure.getData().get(i);
+            if (data.getLabel().equals(JsonLabels.LIGHT1)) {
+                newMeanLumix += data.getValue();
+                num++;
+            }
+        }
+
+        newMeanLumix = newMeanLumix/num;
+
+        if (meanLumix != 0 && Math.abs(newMeanLumix - meanLumix) > LUMIX_DELTA ) {
+//        if (Math.abs(newMeanLumix - meanLumix) > LUMIX_DELTA ) {
+            mynotifyer.createLightNotify();
+        }
+
+        meanLumix = newMeanLumix;
     }
 
     public void addMeasure(Measure measure){

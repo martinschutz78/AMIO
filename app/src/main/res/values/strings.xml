@@ -33,6 +33,8 @@
     <string name="overview_light_mote">Mote</string>
     <string name="Terminate">Terminate</string>
     <string name="RunningBackground">Running background...</string>
+    <string name="LightAlert">Light Alert</string>
+    <string name="UnexpectedEvent">An unexpected event occured...</string>
 
 
 </resources>
