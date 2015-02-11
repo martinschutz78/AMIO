@@ -1,16 +1,17 @@
 package com.axel_martin.iottelecom;
 
-import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
 import com.axel_martin.iottelecom.model.Measure;
@@ -71,19 +72,19 @@ public class DataService extends Service {
         Timer timer = new Timer();
         createNotify();
         timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                try {
-                    updateData();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        },
-        10000,
-        60000);
+                                      @Override
+                                      public void run() {
+                                          try {
+                                              updateData();
+                                          } catch (ExecutionException e) {
+                                              e.printStackTrace();
+                                          } catch (InterruptedException e) {
+                                              e.printStackTrace();
+                                          }
+                                      }
+                                  },
+                10000,
+                60000);
     }
 
     private void createNotify(){
@@ -92,22 +93,36 @@ public class DataService extends Service {
 
         //On créer la notification
         //Avec son icône et son texte défilant (optionel si l'on veut pas de texte défilant on met cet argument à null)
-        Notification.Builder started = new Notification.Builder(this)
+        NotificationCompat.Builder started = new NotificationCompat.Builder(this)
                 .setContentTitle("IoT TELECOM Nancy")
                 .setContentText("Running background...")
                 .setSmallIcon(R.drawable.small_notification)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.large_notification));
+                //.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.large_notification))
+                .setCategory(NotificationCompat.CATEGORY_SERVICE)
+                .setPriority(NotificationCompat.PRIORITY_MIN)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setColor(getResources().getColor(R.color.colorPrimary_Light))
+                .setShowWhen(false)
+                .setOngoing(true);
 
-        //Le PendingIntent c'est ce qui va nous permettre d'atteindre notre deuxième Activity
-        //ActivityNotification sera donc le nom de notre seconde Activity
-        //PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, ActivityNotification.class), 0);
+        // Creates an explicit intent for an Activity in your app
+        Intent resultIntent = new Intent(this, MainActivity.class);
 
-
-        //On ajoute un style de vibration à notre notification
-        //L'utilisateur est donc également averti par les vibrations de son téléphone
-        //Ici les chiffres correspondent à 0sec de pause, 0.2sec de vibration, 0.1sec de pause, 0.2sec de vibration, 0.1sec de pause, 0.2sec de vibration
-        //Vous pouvez bien entendu modifier ces valeurs à votre convenance
-        //started.vibrate = new long[] {0,200,100,200,100,200};
+        // The stack builder object will contain an artificial back stack for the
+        // started Activity.
+        // This ensures that navigating backward from the Activity leads out of
+        // your application to the Home screen.
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        // Adds the back stack for the Intent (but not the Intent itself)
+        stackBuilder.addParentStack(MainActivity.class);
+        // Adds the Intent that starts the Activity to the top of the stack
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(
+                        0,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        started.setContentIntent(resultPendingIntent);
 
         //Enfin on ajoute notre notification et son ID à notre gestionnaire de notification
         notificationManager.notify(1, started.build());
@@ -220,5 +235,5 @@ public class DataService extends Service {
         return sb.toString();
     }
 
-    
+
 }
