@@ -15,6 +15,7 @@ import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
 import com.axel_martin.iottelecom.model.Measure;
+import com.axel_martin.iottelecom.utils.TerminateService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.apache.http.HttpEntity;
@@ -38,6 +39,7 @@ import java.util.concurrent.ExecutionException;
 public class DataService extends Service {
 
     private ArrayList<Measure> measures;
+    private NotificationManager notificationManager;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
 
@@ -60,6 +62,7 @@ public class DataService extends Service {
     @Override
     public void onDestroy() {
         unregisterReceiver(receiver);
+        notificationManager.cancelAll();
         super.onDestroy();
     }
 
@@ -89,24 +92,12 @@ public class DataService extends Service {
 
     private void createNotify(){
         //On créer un "gestionnaire de notification"
-        NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-
-        //On créer la notification
-        //Avec son icône et son texte défilant (optionel si l'on veut pas de texte défilant on met cet argument à null)
-        NotificationCompat.Builder started = new NotificationCompat.Builder(this)
-                .setContentTitle("IoT TELECOM Nancy")
-                .setContentText("Running background...")
-                .setSmallIcon(R.drawable.small_notification)
-                //.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.large_notification))
-                .setCategory(NotificationCompat.CATEGORY_SERVICE)
-                .setPriority(NotificationCompat.PRIORITY_MIN)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setColor(getResources().getColor(R.color.colorPrimary_Light))
-                .setShowWhen(false)
-                .setOngoing(true);
+        notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
 
         // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(this, MainActivity.class);
+        Intent deleteIntent = new Intent(this, TerminateService.class);
+        PendingIntent pendingIntentTerminate = PendingIntent.getBroadcast(this, 0, deleteIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // The stack builder object will contain an artificial back stack for the
         // started Activity.
@@ -122,7 +113,22 @@ public class DataService extends Service {
                         0,
                         PendingIntent.FLAG_UPDATE_CURRENT
                 );
-        started.setContentIntent(resultPendingIntent);
+
+        //On créer la notification
+        //Avec son icône et son texte défilant (optionel si l'on veut pas de texte défilant on met cet argument à null)
+        NotificationCompat.Builder started = new NotificationCompat.Builder(this)
+                .setContentTitle("IoT TELECOM Nancy")
+                .setContentText("Running background...")
+                .setContentIntent(resultPendingIntent)
+                .setSmallIcon(R.drawable.small_notification)
+                //.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.large_notification))
+                .setCategory(NotificationCompat.CATEGORY_SERVICE)
+                .setPriority(NotificationCompat.PRIORITY_MIN)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setColor(getResources().getColor(R.color.colorPrimary_Light))
+                .setShowWhen(false)
+                .setOngoing(true)
+                .addAction(R.drawable.abc_ic_clear_mtrl_alpha, "Terminer", pendingIntentTerminate);
 
         //Enfin on ajoute notre notification et son ID à notre gestionnaire de notification
         notificationManager.notify(1, started.build());
