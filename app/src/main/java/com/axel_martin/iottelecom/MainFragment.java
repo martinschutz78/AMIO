@@ -79,7 +79,8 @@ public class MainFragment extends Fragment {
         rootLinear.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-               //updateData();
+                Intent intentFirstFlush = new Intent("com.axel_martin.iottelecom.MainActivity.FIRST");
+                getActivity().sendBroadcast(intentFirstFlush);
             }
         });
         model = (Model) getArguments().getSerializable(ARG_MODEL);
