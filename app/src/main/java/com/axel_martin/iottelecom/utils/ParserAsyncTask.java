@@ -37,6 +37,6 @@ public class ParserAsyncTask extends AsyncTask<String, String, Measure> {
     @Override
     protected void onPostExecute(Measure measure) {
         super.onPostExecute(measure);
-        mainFragment.updateDataFinishParsing(measure);
+        //mainFragment.updateDataFinishParsing(measure);
     }
 }
