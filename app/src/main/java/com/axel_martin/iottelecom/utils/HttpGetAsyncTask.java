@@ -65,7 +65,7 @@ public class HttpGetAsyncTask extends AsyncTask<String, String, String>{
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
         if(type == this.DATA){
-            mainFragment.updateDataToParse(s);
+            //mainFragment.updateDataToParse(s);
         } else {
             mainFragment.updateInfoToParse(s);
         }

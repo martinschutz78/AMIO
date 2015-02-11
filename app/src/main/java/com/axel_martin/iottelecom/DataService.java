@@ -51,16 +51,34 @@ public class DataService extends Service {
         }
     };
 
+    private BroadcastReceiver firstReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle = intent.getExtras();
+            Log.d("CATCH", "CATCH FIRST BROADCAST");
+            try {
+                updateData();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
     @Override
     public void onCreate() {
         super.onCreate();
         measures = new ArrayList<>();
-        registerReceiver(receiver, new IntentFilter("com.axel_martin.iottelecom.MainActivity"));
+        registerReceiver(firstReceiver, new IntentFilter("com.axel_martin.iottelecom.MainActivity.FIRST"));
+        registerReceiver(receiver, new IntentFilter("com.axel_martin.iottelecom.MainActivity.FLUSH"));
         myStartService();
     }
 
     @Override
     public void onDestroy() {
+        unregisterReceiver(firstReceiver);
         unregisterReceiver(receiver);
         notificationManager.cancelAll();
         super.onDestroy();

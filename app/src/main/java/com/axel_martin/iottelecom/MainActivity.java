@@ -46,7 +46,7 @@ public class MainActivity extends ActionBarActivity
             Log.d("MEASURELIST", String.valueOf(model.getMeasureList().size()));
             UpdateTask updateTask = new UpdateTask();
             updateTask.execute();
-            Intent intent2 = new Intent("com.axel_martin.iottelecom.MainActivity");
+            Intent intent2 = new Intent("com.axel_martin.iottelecom.MainActivity.FLUSH");
             sendBroadcast(intent2);
         }
     };
@@ -83,9 +83,6 @@ public class MainActivity extends ActionBarActivity
 
         Intent serviceIntent = new Intent(this, DataService.class);
         startService(serviceIntent);
-
-
-
     }
 
     @Override
@@ -175,61 +172,74 @@ public class MainActivity extends ActionBarActivity
         return super.getSupportActionBar();
     }
 
+    public void updateSenderList(){
+        for (int i = 0; i < model.getInfo().getSender().size(); i++) {
+            boolean correspondance = false;
+            for (int j = 0; j < model.getSenderList().size(); j++) {
+                if (model.getSenderList().get(j).getId() == model.getInfo().getSender().get(i).getId()) {
+                    model.getSenderList().get(j).setIpv6(model.getInfo().getSender().get(i).getIpv6());
+                    model.getSenderList().get(j).setLat(model.getInfo().getSender().get(i).getLat());
+                    model.getSenderList().get(j).setLon(model.getInfo().getSender().get(i).getLon());
+                    model.getSenderList().get(j).setMac(model.getInfo().getSender().get(i).getMac());
+                    correspondance = true;
+                    break;
+                } else {
+                    correspondance = false;
+                }
+            }
+            if (!correspondance) {
+                model.getSenderList().add(model.getInfo().getSender().get(i));
+            }
+            correspondance = false;
+        }
+    }
+
+    public void updateSenderListDatas(){
+        for(int w=0; w<model.getMeasureList().size();w++) {
+            for (int i = 0; i < model.getMeasureList().get(w).getData().size(); i++) {
+                for (int j = 0; j < model.getSenderList().size(); j++) {
+                    if (model.getSenderList().get(j).getIpv6() == model.getMeasureList().get(w).getData().get(i).getMote()) {
+                        if (model.getSenderList().get(j).getDatalist() == null) {
+                            model.getSenderList().get(j).setDatalist(new ArrayList<Data>());
+                        }
+                        model.getSenderList().get(j).getDatalist().add(model.getMeasureList().get(w).getData().get(i));
+                    }
+                }
+            }
+        }
+    }
+
+    public void updateFragments(){
+
+        for(int i=0; i<fragmentManager.getFragments().size();i++){
+            if(fragmentManager.getFragments().get(i) instanceof ValueFragment){
+                ((ValueFragment) fragmentManager.getFragments().get(i)).update();
+                Log.d("Update", "Update valueFrag");
+            } else if(fragmentManager.getFragments().get(i) instanceof MainFragment) {
+                ((MainFragment) fragmentManager.getFragments().get(i)).update();
+                Log.d("Update", "Update mainFrag");
+            }
+        }
+    }
+
     private class UpdateTask extends AsyncTask<String, String, String> {
 
 
         @Override
         protected String doInBackground(String... params) {
             try {
-                for (int i = 0; i < model.getInfo().getSender().size(); i++) {
-                    boolean correspondance = false;
-                    for (int j = 0; j < model.getSenderList().size(); j++) {
-                        if (model.getSenderList().get(j).getId() == model.getInfo().getSender().get(i).getId()) {
-                            model.getSenderList().get(j).setIpv6(model.getInfo().getSender().get(i).getIpv6());
-                            model.getSenderList().get(j).setLat(model.getInfo().getSender().get(i).getLat());
-                            model.getSenderList().get(j).setLon(model.getInfo().getSender().get(i).getLon());
-                            model.getSenderList().get(j).setMac(model.getInfo().getSender().get(i).getMac());
-                            correspondance = true;
-                            break;
-                        } else {
-                            correspondance = false;
-                        }
-                    }
-                    if (!correspondance) {
-                        model.getSenderList().add(model.getInfo().getSender().get(i));
-                    }
-                    correspondance = false;
-                }
-                for(int w=0; w<model.getMeasureList().size();w++) {
-                    for (int i = 0; i < model.getMeasureList().get(w).getData().size(); i++) {
-                        for (int j = 0; j < model.getSenderList().size(); j++) {
-                            if (model.getSenderList().get(j).getIpv6() == model.getMeasureList().get(w).getData().get(i).getMote()) {
-                                if (model.getSenderList().get(j).getDatalist() == null) {
-                                    model.getSenderList().get(j).setDatalist(new ArrayList<Data>());
-                                }
-                                model.getSenderList().get(j).getDatalist().add(model.getMeasureList().get(w).getData().get(i));
-                            }
-                        }
-                    }
-                }
+                updateSenderList();
+                updateSenderListDatas();
             } catch (Exception e){
                 e.printStackTrace();
             }
-
-
             return null;
         }
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            for(int i=0; i<fragmentManager.getFragments().size();i++){
-                if(fragmentManager.getFragments().get(i) instanceof ValueFragment){
-                    ((ValueFragment) fragmentManager.getFragments().get(i)).update();
-                    Log.d("Update", "Update valueFrag");
-                }
-            }
-
+            updateFragments();
         }
     }
 
