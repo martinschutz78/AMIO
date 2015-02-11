@@ -117,8 +117,8 @@ public class DataService extends Service {
         //On créer la notification
         //Avec son icône et son texte défilant (optionel si l'on veut pas de texte défilant on met cet argument à null)
         NotificationCompat.Builder started = new NotificationCompat.Builder(this)
-                .setContentTitle("IoT TELECOM Nancy")
-                .setContentText("Running background...")
+                .setContentTitle(getResources().getString(R.string.app_name))
+                .setContentText(getResources().getString(R.string.RunningBackground))
                 .setContentIntent(resultPendingIntent)
                 .setSmallIcon(R.drawable.small_notification)
                 //.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.large_notification))
@@ -128,7 +128,7 @@ public class DataService extends Service {
                 .setColor(getResources().getColor(R.color.colorPrimary_Light))
                 .setShowWhen(false)
                 .setOngoing(true)
-                .addAction(R.drawable.abc_ic_clear_mtrl_alpha, "Terminer", pendingIntentTerminate);
+                .addAction(R.drawable.abc_ic_clear_mtrl_alpha, getResources().getString(R.string.Terminate), pendingIntentTerminate);
 
         //Enfin on ajoute notre notification et son ID à notre gestionnaire de notification
         notificationManager.notify(1, started.build());

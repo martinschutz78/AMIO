@@ -31,6 +31,8 @@
     <string name="overview_light_date">Date</string>
     <string name="overview_light_value">Value</string>
     <string name="overview_light_mote">Mote</string>
+    <string name="Terminate">Terminate</string>
+    <string name="RunningBackground">Running background...</string>
 
 
 </resources>
