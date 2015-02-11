@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -93,7 +94,9 @@ public class DataService extends Service {
         //Avec son icône et son texte défilant (optionel si l'on veut pas de texte défilant on met cet argument à null)
         Notification.Builder started = new Notification.Builder(this)
                 .setContentTitle("IoT TELECOM Nancy")
-                .setContentText("Running background...").setSmallIcon(R.drawable.small_notification);
+                .setContentText("Running background...")
+                .setSmallIcon(R.drawable.small_notification)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.large_notification));
 
         //Le PendingIntent c'est ce qui va nous permettre d'atteindre notre deuxième Activity
         //ActivityNotification sera donc le nom de notre seconde Activity
