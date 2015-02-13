@@ -3,6 +3,7 @@ package com.axel_martin.iottelecom.utils;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.axel_martin.iottelecom.MainActivity;
 import com.axel_martin.iottelecom.MainFragment;
 
 import org.apache.http.HttpEntity;
@@ -24,10 +25,10 @@ public class HttpGetAsyncTask extends AsyncTask<String, String, String>{
     public static final int DATA = 1;
     public static final int INFO = 2;
 
-    private MainFragment mainFragment;
+    private MainActivity mainFragment;
     private int type;
 
-    public HttpGetAsyncTask(MainFragment mainfrag, int type){
+    public HttpGetAsyncTask(MainActivity mainfrag, int type){
         this.mainFragment=mainfrag;
         this.type=type;
     }

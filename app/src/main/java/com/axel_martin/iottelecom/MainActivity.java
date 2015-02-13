@@ -19,8 +19,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.axel_martin.iottelecom.model.Data;
+import com.axel_martin.iottelecom.model.Info;
 import com.axel_martin.iottelecom.model.Measure;
 import com.axel_martin.iottelecom.model.Model;
+import com.axel_martin.iottelecom.utils.HttpGetAsyncTask;
+import com.axel_martin.iottelecom.utils.ParserInfoAsyncTask;
 
 import java.util.ArrayList;
 
@@ -35,8 +38,13 @@ public class MainActivity extends ActionBarActivity
     private Toolbar toolBar;
     private Model model;
 
+    public final static int SETTINGS_CODE = 1000;
+
     private ValueFragment valueFragment;
     private FragmentManager fragmentManager;
+
+    private boolean isRotate = false;
+    private boolean isActivityResult = false;
 
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -68,11 +76,11 @@ public class MainActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         if(savedInstanceState != null){
             model = (Model) savedInstanceState.getSerializable("MODEL");
+            isRotate  = true;
             Log.d("MAIN ACTIVITY", "restore model");
         } else {
             model = new Model();
         }
-
 
         setContentView(R.layout.toolbar_layout); //invoke the layout
 
@@ -90,12 +98,31 @@ public class MainActivity extends ActionBarActivity
 
         Intent serviceIntent = new Intent(this, DataService.class);
         startService(serviceIntent);
+
+
+
+    }
+
+    public void sendFirstFlush(){
+        Intent intentFirstFlush = new Intent("com.axel_martin.iottelecom.MainActivity.FIRST");
+        sendBroadcast(intentFirstFlush);
+        Log.d("MAIN ACTIVITY","FIRST FLUSH SEND");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         registerReceiver(receiver, new IntentFilter("com.axel_martin.iottelecom"));
+        if(!(isRotate || isActivityResult)){
+            Log.d("MAIN ACTIVITY", "UPDATE");
+            updateInfo();
+        }
+        /*if(!isActivityResult){
+            Log.d("MAIN ACTIVITY", "UPDATE");
+            updateInfo();
+        } else {
+          isActivityResult = true;
+        }*/
     }
 
     @Override
@@ -168,11 +195,22 @@ public class MainActivity extends ActionBarActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
-            startActivityForResult(intent, 1000); //start the activity of preferences
+            startActivityForResult(intent, SETTINGS_CODE); //start the activity of preferences
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == SETTINGS_CODE){
+            Log.d("MAIN ACTIVITY", "SETTINGS CODE");
+            isActivityResult = true;
+        }
+
     }
 
     @Override
@@ -201,6 +239,20 @@ public class MainActivity extends ActionBarActivity
             }
             correspondance = false;
         }
+    }
+
+    public void updateInfo(){
+        HttpGetAsyncTask httpInfoTask = new HttpGetAsyncTask(this, HttpGetAsyncTask.INFO);
+        httpInfoTask.execute("http://iotlab.telecomnancy.eu/rest/info/motes");
+    }
+
+    public void updateInfoToParse(String info){
+        ParserInfoAsyncTask parserInfoTask = new ParserInfoAsyncTask(this);
+        parserInfoTask.execute(info);
+    }
+
+    public void updateInfoFinishParsing(Info info){
+        model.setInfo(info);
     }
 
     public void updateSenderListDatas(){

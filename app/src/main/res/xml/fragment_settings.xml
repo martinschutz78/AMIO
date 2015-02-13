@@ -30,4 +30,7 @@
         android:key="isServiceStartAtBoot"
         android:title="Service start at boot"
         />
+    <Preference
+        android:key="intervalPicker"
+        android:title="blabla"/>
 </PreferenceScreen>
