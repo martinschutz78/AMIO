@@ -235,8 +235,10 @@ public class MainActivity extends ActionBarActivity
         @Override
         protected String doInBackground(String... params) {
             try {
-                updateSenderList();
-                updateSenderListDatas();
+                if(model.getSenderList() != null) {
+                    updateSenderList();
+                    updateSenderListDatas();
+                }
             } catch (Exception e){
                 e.printStackTrace();
             }
