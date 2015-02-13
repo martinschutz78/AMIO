@@ -70,12 +70,24 @@ public class DataService extends Service {
         }
     };
 
+    private BroadcastReceiver updateReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle = intent.getExtras();
+            timer.cancel();
+            timer.purge();
+            startTimer(interval);
+        }
+    };
+
     @Override
     public void onCreate() {
         super.onCreate();
         measures = new ArrayList<>();
         registerReceiver(firstReceiver, new IntentFilter("com.axel_martin.iottelecom.MainActivity.FIRST"));
         registerReceiver(receiver, new IntentFilter("com.axel_martin.iottelecom.MainActivity.FLUSH"));
+        registerReceiver(updateReceiver, new IntentFilter("com.axel_martin.iottelecom.MainActivity.UPDATE"));
         myStartService();
     }
 
@@ -95,6 +107,10 @@ public class DataService extends Service {
     public void myStartService(){
         timer = new Timer();
         createNotify();
+        startTimer(interval);
+    }
+
+    public void startTimer(int myInterval){
         timer.scheduleAtFixedRate(new TimerTask() {
                                       @Override
                                       public void run() {
@@ -108,7 +124,7 @@ public class DataService extends Service {
                                       }
                                   },
                 10000,
-                interval);
+                myInterval);
     }
 
     private void createNotify(){
