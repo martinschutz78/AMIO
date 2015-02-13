@@ -4,8 +4,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -64,7 +66,12 @@ public class MainActivity extends ActionBarActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        model = new Model();
+        if(savedInstanceState != null){
+            model = (Model) savedInstanceState.getSerializable("MODEL");
+            Log.d("MAIN ACTIVITY", "restore model");
+        } else {
+            model = new Model();
+        }
 
 
         setContentView(R.layout.toolbar_layout); //invoke the layout
@@ -241,6 +248,14 @@ public class MainActivity extends ActionBarActivity
             super.onPostExecute(s);
             updateFragments();
         }
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable("MODEL", model);
+        super.onSaveInstanceState(outState);
+
     }
 
 }

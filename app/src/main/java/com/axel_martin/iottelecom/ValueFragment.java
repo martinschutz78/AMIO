@@ -1,6 +1,7 @@
 package com.axel_martin.iottelecom;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -186,4 +187,5 @@ public class ValueFragment extends Fragment implements MyObserver {
     public void update() {
         setupGUI();
     }
+
 }
