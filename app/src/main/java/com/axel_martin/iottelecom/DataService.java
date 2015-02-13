@@ -10,10 +10,9 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.axel_martin.iottelecom.model.Data;
 import com.axel_martin.iottelecom.model.JsonLabels;
 import com.axel_martin.iottelecom.model.Measure;
-import com.axel_martin.iottelecom.utils.MyNotifyer;
+import com.axel_martin.iottelecom.utils.MyNotifier;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.apache.http.HttpEntity;
@@ -36,11 +35,11 @@ import java.util.concurrent.ExecutionException;
  */
 public class DataService extends Service {
 
-    private static final double LUMIX_DELTA = 75;
+    private double lumixDelta = 75;
 
     private ArrayList<Measure> measures;
-    private MyNotifyer mynotifyer;
-    private double meanLumix = 0;
+    private MyNotifier myNotifyer;
+    private Measure lastMeasure;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
 
@@ -81,7 +80,7 @@ public class DataService extends Service {
     public void onDestroy() {
         unregisterReceiver(firstReceiver);
         unregisterReceiver(receiver);
-        mynotifyer.cancelAll();
+        myNotifyer.cancelAll();
         super.onDestroy();
     }
 
@@ -92,7 +91,7 @@ public class DataService extends Service {
 
     public void myStartService() {
         Timer timer = new Timer();
-        mynotifyer = new MyNotifyer(this);
+        myNotifyer = new MyNotifier(this);
         timer.scheduleAtFixedRate(new TimerTask() {
                                       @Override
                                       public void run() {
@@ -175,27 +174,31 @@ public class DataService extends Service {
     }
 
     private void checkLuminosity(Measure measure) {
-        double newMeanLumix = 0;
-        int num = 0;
+        if (lastMeasure != null) {
+            for (int i = 0; i < measure.getData().size(); i++) {
+                for (int j = 0; j < lastMeasure.getData().size(); j++) {
+                    if (measure.getData().get(i).getMote() == lastMeasure.getData().get(j).getMote()) {
 
-        for (int i = 0; i < measure.getData().size(); i++) {
-            Data data = measure.getData().get(i);
-            if (data.getLabel().equals(JsonLabels.LIGHT1)) {
-                newMeanLumix += data.getValue();
-                num++;
+                        //Lumix trigger
+                        if (measure.getData().get(i).getLabel().equals(JsonLabels.LIGHT1) && lastMeasure.getData().get(j).getLabel().equals(JsonLabels.LIGHT1)) {
+
+                            //Debug
+                            myNotifyer.createLightNotify(2.5);
+                            if (measure.getData().get(i).getValue() == lastMeasure.getData().get(j).getValue()) {
+                                Log.d("same value", "true");
+                            } else {
+                                Log.d("same value", "false");
+                            }
+
+                            if (measure.getData().get(i).getLabel().equals(JsonLabels.LIGHT1) && measure.getData().get(i).getValue() - lastMeasure.getData().get(j).getValue() >= lumixDelta) {
+                                myNotifyer.createLightNotify(measure.getData().get(i).getMote());
+                            }
+                        }
+                    }
+                }
             }
         }
-
-        newMeanLumix = newMeanLumix/num;
-
-        // Debug
-        mynotifyer.createLightNotify();
-
-        if (meanLumix != 0 && Math.abs(newMeanLumix - meanLumix) > LUMIX_DELTA ) {
-            mynotifyer.createLightNotify();
-        }
-
-        meanLumix = newMeanLumix;
+        lastMeasure = measure;
     }
 
     public void addMeasure(Measure measure){

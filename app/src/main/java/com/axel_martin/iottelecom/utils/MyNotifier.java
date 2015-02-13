@@ -14,11 +14,11 @@ import com.axel_martin.iottelecom.R;
 /**
  * @author Axel
  */
-public class MyNotifyer {
+public class MyNotifier {
     private NotificationManager notificationManager;
     private Context context;
 
-    public MyNotifyer(Context context){
+    public MyNotifier(Context context){
 
         this.context = context;
 
@@ -68,7 +68,7 @@ public class MyNotifyer {
         notificationManager.notify(1, started.build());
     }
 
-    public void createLightNotify() {
+    public void createLightNotify(double mote) {
         // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(context, MainActivity.class);
 
@@ -99,13 +99,7 @@ public class MyNotifyer {
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setColor(context.getResources().getColor(R.color.colorPrimary_Light))
                 .setGroup(context.getResources().getString(R.string.app_name))
-                .setDefaults(NotificationCompat.DEFAULT_ALL);
-//                .setDefaults(NotificationCompat.DEFAULT_VIBRATE)
-//                .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
-//                .setLights(Color.YELLOW, 3000, 3000);
-//                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
-
-
+                .setDefaults(NotificationCompat.DEFAULT_ALL);   //Sound, vibration and LED
 
         //Add notification and it's id to the manager
         notificationManager.notify(2, started.build());
