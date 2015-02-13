@@ -41,6 +41,9 @@ public class DataService extends Service {
     private ArrayList<Measure> measures;
     private NotificationManager notificationManager;
 
+    private Timer timer;
+    private int interval = 60000;
+
     private BroadcastReceiver receiver = new BroadcastReceiver() {
 
         @Override
@@ -90,7 +93,7 @@ public class DataService extends Service {
     }
 
     public void myStartService(){
-        Timer timer = new Timer();
+        timer = new Timer();
         createNotify();
         timer.scheduleAtFixedRate(new TimerTask() {
                                       @Override
@@ -105,7 +108,7 @@ public class DataService extends Service {
                                       }
                                   },
                 10000,
-                60000);
+                interval);
     }
 
     private void createNotify(){
@@ -259,5 +262,11 @@ public class DataService extends Service {
         return sb.toString();
     }
 
-
+    @Override
+    public boolean stopService(Intent name) {
+        timer.cancel();
+        timer.purge();
+        Log.d("DATA SERVICE", "THE STOP SERVICE HAS BEEN CALLED");
+        return super.stopService(name);
+    }
 }
