@@ -2,7 +2,6 @@ package com.axel_martin.iottelecom;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -26,10 +25,7 @@ import com.axel_martin.iottelecom.model.JsonLabels;
 import com.axel_martin.iottelecom.model.Measure;
 import com.axel_martin.iottelecom.model.Model;
 import com.axel_martin.iottelecom.utils.HttpGetAsyncTask;
-import com.axel_martin.iottelecom.utils.ParserAsyncTask;
 import com.axel_martin.iottelecom.utils.ParserInfoAsyncTask;
-
-import java.util.ArrayList;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -123,7 +119,7 @@ public class MainFragment extends Fragment {
         humidityTable.removeAllViews();
         lightTable.removeAllViews();
 
-        motesNumber.setText(getResources().getString(R.string.overview_motes_number) + " " + String.valueOf(model.getInfo().getMotesNb()));
+        motesNumber.setText(getResources().getString(R.string.NumberMotes) + " " + String.valueOf(model.getInfo().getMotesNb()));
         for (int i = 0; i < model.getInfo().getSink().size(); i++) {
             motesTable.addView(new OverviewMotesCardRow(
                     getActivity().getApplicationContext(),

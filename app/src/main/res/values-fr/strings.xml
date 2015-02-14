@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_settings">Paramètres</string>
+    <string name="HumidityAlert">Alerte Humidité</string>
+    <string name="HumidityAlertContent">Taux d\'humidité inattendu !</string>
+    <string name="LightAlert">Alerte Lumière</string>
+    <string name="LightAlertContent">Lumière inattendue détectée !</string>
+    <string name="MultipleAlerts">Alertes Multiples</string>
+    <string name="MultipleAlertsContent">Des évènements inattendus requièrent votre attention…</string>
+    <string name="Refresh">Actualiser</string>
+    <string name="RunningBackground">Fonctionne en arrière-plan…</string>
+    <string name="TemperatureAlert">Alerte Température</string>
+    <string name="TemperatureAlertContent">Température inattendue détectée</string>
+    <string name="Terminate">Terminer</string>
+    <string name="navigation_drawer_close">Fermer le volet de navigation</string>
+    <string name="navigation_drawer_open">Ouvrir le volet de navigation</string>
+    <string name="Date">Date</string>
+    <string name="Humidity">Humidité</string>
+    <string name="Light">Lumière</string>
+    <string name="Mote">Noeud</string>
+    <string name="Motes">Noeuds</string>
+    <string name="NumberMotes">Nombre de noeuds connectés :</string>
+    <string name="Temperature">Température</string>
+    <string name="Type">Type</string>
+    <string name="Value">Valeur</string>
+    <string name="Overview">Vue d\'ensemble</string>
+</resources>

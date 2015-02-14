@@ -28,7 +28,7 @@
                     android:gravity="center"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/overview_motes_title"
+                    android:text="@string/Motes"
                     />
 
                 <TextView
@@ -54,27 +54,27 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@string/overview_motes_id"/>
+                            android:text="@string/ID"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@string/overview_motes_type"/>
+                            android:text="@string/Type"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@string/overview_motes_ipv6"/>
+                            android:text="@string/IPv6_MAC"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@string/overview_motes_lat"/>
+                            android:text="@string/Lat"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@string/overview_motes_lon"/>
+                            android:text="@string/Lon"/>
                     </TableRow>
                 </TableLayout>
             </LinearLayout>
@@ -103,7 +103,7 @@
                     android:gravity="center"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/overview_temperature_title"
+                    android:text="@string/Temperature"
                     />
 
                 <TextView
@@ -129,17 +129,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@string/overview_temperature_mote"/>
+                            android:text="@string/Mote"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@string/overview_temperature_date"/>
+                            android:text="@string/Date"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@string/overview_temperature_value"/>
+                            android:text="@string/Value"/>
                     </TableRow>
                 </TableLayout>
             </LinearLayout>
@@ -166,7 +166,7 @@
                     android:gravity="center"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/overview_light_title"
+                    android:text="@string/Light"
                     />
 
                 <TextView
@@ -192,17 +192,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@string/overview_light_mote"/>
+                            android:text="@string/Mote"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@string/overview_light_date"/>
+                            android:text="@string/Date"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@string/overview_light_value"/>
+                            android:text="@string/Value"/>
                     </TableRow>
                 </TableLayout>
             </LinearLayout>
@@ -229,7 +229,7 @@
                     android:gravity="center"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/overview_humidity_title"
+                    android:text="@string/Humidity"
                     />
 
                 <TextView
@@ -255,17 +255,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@string/overview_humidity_mote"/>
+                            android:text="@string/Mote"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@string/overview_humidity_date"/>
+                            android:text="@string/Date"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@string/overview_humidity_value"/>
+                            android:text="@string/Value"/>
                     </TableRow>
                 </TableLayout>
             </LinearLayout>

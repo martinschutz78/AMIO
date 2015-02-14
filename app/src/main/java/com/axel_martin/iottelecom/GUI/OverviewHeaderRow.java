@@ -27,9 +27,9 @@ public class OverviewHeaderRow extends TableRow{
         dateView = new TextView(context);
         moteView = new TextView(context);
 
-        value = getResources().getString(R.string.overview_humidity_value);
-        mote = getResources().getString(R.string.overview_humidity_mote);
-        date = getResources().getString(R.string.overview_humidity_date);
+        value = getResources().getString(R.string.Value);
+        mote = getResources().getString(R.string.Mote);
+        date = getResources().getString(R.string.Date);
 
         LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 

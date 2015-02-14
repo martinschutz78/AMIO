@@ -1,36 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">IoT TELECOM</string>
-    <string name="title_section1">Overview</string>
-    <string name="title_section2">Temperature</string>
-    <string name="title_section3">Light</string>
-    <string name="title_section4">Humidity</string>
+    <string name="app_name" translatable="false">IoT TELECOM</string>
+    <string name="Overview">Overview</string>
+    <string name="Temperature">Temperature</string>
+    <string name="Light">Light</string>
+    <string name="Humidity">Humidity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="action_example">Example action</string>
+    <string name="action_example" translatable="false">Example action</string>
     <string name="action_settings">Settings</string>
     <string name="Refresh">Refresh</string>
-    <string name="default_text">Default</string>
-    <string name="overview_motes_title">Motes</string>
-    <string name="overview_temperature_title">Temperature</string>
-    <string name="overview_humidity_title">Humidity</string>
-    <string name="overview_light_title">Light</string>
-    <string name="overview_motes_id">ID</string>
-    <string name="overview_motes_type">Type</string>
-    <string name="overview_motes_ipv6">IPv6/MAC</string>
-    <string name="overview_motes_lat">Lat</string>
-    <string name="overview_motes_lon">Lon</string>
-    <string name="overview_motes_number">Number of connected motes : </string>
-    <string name="overview_temperature_date">Date</string>
-    <string name="overview_temperature_value">Value</string>
-    <string name="overview_temperature_mote">Mote</string>
-    <string name="overview_humidity_date">Date</string>
-    <string name="overview_humidity_value">Value</string>
-    <string name="overview_humidity_mote">Mote</string>
-    <string name="overview_light_date">Date</string>
-    <string name="overview_light_value">Value</string>
-    <string name="overview_light_mote">Mote</string>
+    <string name="default_text" translatable="false">Default</string>
+    <string name="Motes">Motes</string>
+    <string name="ID" translatable="false">ID</string>
+    <string name="Type">Type</string>
+    <string name="IPv6_MAC" translatable="false">IPv6/MAC</string>
+    <string name="Lat" translatable="false">Lat</string>
+    <string name="Lon" translatable="false">Lon</string>
+    <string name="NumberMotes">Number of connected motes:</string>
+    <string name="Date">Date</string>
+    <string name="Value">Value</string>
+    <string name="Mote">Mote</string>
     <string name="Terminate">Terminate</string>
     <string name="RunningBackground">Running background…</string>
     <string name="LightAlert">Light Alert</string>
@@ -40,7 +31,7 @@
     <string name="HumidityAlert">Humidity Alert</string>
     <string name="HumidityAlertContent">Unexpected humidity detected !</string>
     <string name="MultipleAlerts">Multiple Alerts</string>
-    <string name="MultipleAlertsContent">Unexpected events requires your attention...</string>
+    <string name="MultipleAlertsContent">Unexpected events requires your attention…</string>
 
 
 </resources>
