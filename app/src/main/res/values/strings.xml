@@ -32,9 +32,15 @@
     <string name="overview_light_value">Value</string>
     <string name="overview_light_mote">Mote</string>
     <string name="Terminate">Terminate</string>
-    <string name="RunningBackground">Running background...</string>
+    <string name="RunningBackground">Running background…</string>
     <string name="LightAlert">Light Alert</string>
-    <string name="UnexpectedEvent">An unexpected event occured...</string>
+    <string name="LightAlertContent">Unexpected light detected !</string>
+    <string name="TemperatureAlert">Temperature Alert</string>
+    <string name="TemperatureAlertContent">Unexpected temperature detected !</string>
+    <string name="HumidityAlert">Humidity Alert</string>
+    <string name="HumidityAlertContent">Unexpected humidity detected !</string>
+    <string name="MultipleAlerts">Multiple Alerts</string>
+    <string name="MultipleAlertsContent">Unexpected events requires your attention...</string>
 
 
 </resources>

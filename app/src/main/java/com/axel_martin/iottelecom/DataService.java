@@ -1,7 +1,5 @@
 package com.axel_martin.iottelecom;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,8 +8,6 @@ import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
 import com.axel_martin.iottelecom.model.JsonLabels;
@@ -141,7 +137,7 @@ public class DataService extends Service {
 
                 try {
                     Measure measure = mapper.readValue(params[0], Measure.class);
-                    checkLuminosity(measure);
+                    checkTriggers(measure);
                     return measure;
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -196,7 +192,7 @@ public class DataService extends Service {
 
     }
 
-    private void checkLuminosity(Measure measure) {
+    private void checkTriggers(Measure measure) {
         if (lastMeasure != null) {
             for (int i = 0; i < measure.getData().size(); i++) {
                 for (int j = 0; j < lastMeasure.getData().size(); j++) {
@@ -206,15 +202,31 @@ public class DataService extends Service {
                         if (measure.getData().get(i).getLabel().equals(JsonLabels.LIGHT1) && lastMeasure.getData().get(j).getLabel().equals(JsonLabels.LIGHT1)) {
 
                             //Debug
-                            myNotifyer.createLightNotify(2.5);
+                            myNotifyer.createLightNotify(2.5, true);
                             if (measure.getData().get(i).getValue() == lastMeasure.getData().get(j).getValue()) {
                                 Log.d("same value", "true");
                             } else {
                                 Log.d("same value", "false");
                             }
 
-                            if (measure.getData().get(i).getLabel().equals(JsonLabels.LIGHT1) && measure.getData().get(i).getValue() - lastMeasure.getData().get(j).getValue() >= lumixDelta) {
-                                myNotifyer.createLightNotify(measure.getData().get(i).getMote());
+                            if (measure.getData().get(i).getValue() - lastMeasure.getData().get(j).getValue() >= lumixDelta) {
+                                myNotifyer.createLightNotify(measure.getData().get(i).getMote(), true);
+                            }
+                        }
+
+                        //Temperature trigger
+                        if (measure.getData().get(i).getLabel().equals(JsonLabels.TEMPERATURE) && lastMeasure.getData().get(j).getLabel().equals(JsonLabels.TEMPERATURE)) {
+
+                            //Debug
+                            myNotifyer.createTemperatureNotify(2.5, true);
+                            if (measure.getData().get(i).getValue() == lastMeasure.getData().get(j).getValue()) {
+                                Log.d("same value", "true");
+                            } else {
+                                Log.d("same value", "false");
+                            }
+
+                            if (measure.getData().get(i).getValue() - lastMeasure.getData().get(j).getValue() >= lumixDelta) {
+                                myNotifyer.createLightNotify(measure.getData().get(i).getMote(), true);
                             }
                         }
                     }
