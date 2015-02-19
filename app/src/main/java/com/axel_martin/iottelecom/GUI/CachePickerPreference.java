@@ -16,19 +16,19 @@ import android.widget.TextView;
 /**
  * A {@link android.preference.Preference} that displays a number picker as a dialog.
  */
-public class NumberPickerPreference extends DialogPreference {
+public class CachePickerPreference extends DialogPreference {
 
-    public static final int MAX_VALUE = 120;
+    public static final int MAX_VALUE = 100;
     public static final int MIN_VALUE = 1;
 
     private NumberPicker picker;
     private int value;
 
-    public NumberPickerPreference(Context context, AttributeSet attrs) {
+    public CachePickerPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public NumberPickerPreference(Context context, AttributeSet attrs, int defStyleAttr) {
+    public CachePickerPreference(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
@@ -47,7 +47,7 @@ public class NumberPickerPreference extends DialogPreference {
 
         TextView text = new TextView(getContext());
         text.setLayoutParams(linearParams);
-        text.setText("test");
+        text.setText("values");
         text.setTextSize(30);
 
         FrameLayout dialogView = new FrameLayout(getContext());
