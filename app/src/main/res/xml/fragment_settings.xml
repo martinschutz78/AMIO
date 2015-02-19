@@ -62,7 +62,7 @@
             android:summary="@string/settings_light_enable_description"
             />
         <com.axel_martin.iottelecom.GUI.LightPickerPreference
-            android:key="maximumTemperature"
+            android:key="light"
             android:dependency="isLightEnable"
             android:title="@string/settings_light"
             android:summary="@string/settings_light_description"

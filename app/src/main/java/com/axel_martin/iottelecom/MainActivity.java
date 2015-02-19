@@ -4,10 +4,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -39,6 +41,8 @@ public class MainActivity extends ActionBarActivity
     private Model model;
 
     public final static int SETTINGS_CODE = 1000;
+    public final static int SETTINGS_UNCHANGED = 1100;
+    public final static int SETTINGS_CHANGED = 1200;
 
     private ValueFragment valueFragment;
     private FragmentManager fragmentManager;
@@ -208,9 +212,15 @@ public class MainActivity extends ActionBarActivity
 
         if(requestCode == SETTINGS_CODE){
             Log.d("MAIN ACTIVITY", "SETTINGS CODE");
+            Log.d("MAIN ACTIVITY", "SETTINGS CODE "+String.valueOf(resultCode));
+            if(resultCode == SETTINGS_CHANGED){
+                Log.d("MAIN ACTIVITY", "SETTINGS CHANGED");
+                updateServiceInfo();
+            } else if(resultCode == SETTINGS_UNCHANGED){
+                Log.d("MAIN ACTIVITY", "SETTINGS UNCHANGED");
+            }
             isActivityResult = true;
         }
-
     }
 
     @Override
@@ -312,6 +322,27 @@ public class MainActivity extends ActionBarActivity
         outState.putSerializable("MODEL", model);
         super.onSaveInstanceState(outState);
 
+    }
+
+    public void updateServiceInfo(){
+        Log.d("MAIN ACTIVITY", "UPDATE SERVICE");
+        Intent intentUpdateInfo = new Intent("com.axel_martin.iottelecom.MainActivity.UPDATE");
+        SharedPreferences preferences =  PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        intentUpdateInfo.putExtra(DataService.POLLING_REF, preferences.getInt("interval", 60000));
+        intentUpdateInfo.putExtra(DataService.CACHE_REF, preferences.getInt("cache", 10));
+        intentUpdateInfo.putExtra(DataService.IS_TEMPERATURE_ALERT_REF, preferences.getBoolean("isTemperatureEnable", false));
+        intentUpdateInfo.putExtra(DataService.MAX_TEMPERATURE_REF, preferences.getInt("maximumTemperature", -1));
+        intentUpdateInfo.putExtra(DataService.MIN_TEMPERATURE_REF, preferences.getInt("minimumTemperature", -1));
+        intentUpdateInfo.putExtra(DataService.IS_LIGHT_ALERT_REF, preferences.getBoolean("isLightEnable", false));
+        intentUpdateInfo.putExtra(DataService.LIGHT_REF, preferences.getInt("light", -1));
+        intentUpdateInfo.putExtra(DataService.SCHEDULDED_REF, preferences.getBoolean("isTimeEnable", false));
+        intentUpdateInfo.putExtra(DataService.START_TIME_REF, preferences.getString("startTime", ""));
+        intentUpdateInfo.putExtra(DataService.END_TIME_REF, preferences.getString("endTime", ""));
+        intentUpdateInfo.putExtra(DataService.MAIL_REF, preferences.getBoolean("isMailEnable", false));
+        intentUpdateInfo.putExtra(DataService.MAIL_ADDRESS_REF, preferences.getString("mailAddress", ""));
+        intentUpdateInfo.putExtra(DataService.SMS_REF, preferences.getBoolean("isSmsEnable", false));
+        intentUpdateInfo.putExtra(DataService.SMS_ADDRESS_REF, preferences.getString("telNumber", ""));
+        sendBroadcast(intentUpdateInfo);
     }
 
 }

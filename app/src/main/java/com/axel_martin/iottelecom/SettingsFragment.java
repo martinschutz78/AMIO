@@ -32,8 +32,7 @@ import android.util.Log;
 
 public class SettingsFragment extends PreferenceFragment {
 
-	static final int DROP_PATH_OK = 1000;
-	private SharedPreferences sharedPreferences; //preferences of the app
+    private boolean isModified = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -45,9 +44,17 @@ public class SettingsFragment extends PreferenceFragment {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
                 Log.d("SETTINGS FRAGMENT", "PREFERENCE CHANGED");
+                isModified = true;
             }
         });
 
 	}
 
+    public boolean isModified() {
+        return isModified;
+    }
+
+    public void setModified(boolean isModified) {
+        this.isModified = isModified;
+    }
 }
