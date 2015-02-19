@@ -84,5 +84,28 @@
             android:title="@string/settings_time_end"
             android:summary="@string/settings_time_end_description"
             android:dialogTitle="@string/settings_time_end_dialog"/>
+        <SwitchPreference
+            android:key="isMailEnable"
+            android:title="@string/settings_mail_enable"
+            android:summary="@string/settings_mail_enable_description"
+            />
+        <EditTextPreference
+            android:key="mailAddress"
+            android:dependency="isMailEnable"
+            android:title="@string/settings_mail"
+            android:summary="@string/settings_mail_description"
+            android:dialogTitle="@string/settings_mail_dialog"/>
+        <SwitchPreference
+            android:key="isSmsEnable"
+            android:title="@string/settings_sms_enable"
+            android:summary="@string/settings_sms_enable_description"
+            />
+        <EditTextPreference
+            android:key="telNumber"
+            android:inputType="phone"
+            android:dependency="isSmsEnable"
+            android:title="@string/settings_sms"
+            android:summary="@string/settings_sms_description"
+            android:dialogTitle="@string/settings_sms_dialog"/>
     </PreferenceCategory>
 </PreferenceScreen>

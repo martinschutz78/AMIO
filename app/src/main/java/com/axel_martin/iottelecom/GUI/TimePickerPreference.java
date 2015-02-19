@@ -27,8 +27,8 @@ public class TimePickerPreference extends DialogPreference {
     public TimePickerPreference(Context ctxt, AttributeSet attrs) {
         super(ctxt, attrs);
 
-        setPositiveButtonText("Set");
-        setNegativeButtonText("Cancel");
+        /*setPositiveButtonText("Set");
+        setNegativeButtonText("Cancel");*/
     }
 
     @Override
