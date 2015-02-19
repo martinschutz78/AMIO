@@ -60,12 +60,17 @@ public class DataService extends Service {
         public void onReceive(Context context, Intent intent) {
             Bundle bundle = intent.getExtras();
             Log.d("CATCH", "CATCH FIRST BROADCAST");
-            try {
-                updateData();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            if(measures.size()>0){
+                sendMeasures();
+                flushMeasures();
+            } else {
+                try {
+                    updateData();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     };
@@ -226,13 +231,13 @@ public class DataService extends Service {
         parser.execute(result);
 
         addMeasure(parser.get());
+        sendMeasures();
+    }
 
-
+    public void sendMeasures(){
         Intent intent = new Intent("com.axel_martin.iottelecom");
         intent.putExtra("RESULT", measures);
         sendBroadcast(intent);
-
-
     }
 
     public void addMeasure(Measure measure){

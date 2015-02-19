@@ -31,6 +31,16 @@
     <string name="overview_light_date">Date</string>
     <string name="overview_light_value">Value</string>
     <string name="overview_light_mote">Mote</string>
+    <string name="settings_service_category_header">Service preferences</string>
+    <string name="settings_update_interval">Polling time</string>
+    <string name="settings_update_interval_description">The time between polling data</string>
+    <string name="settings_update_interval_dialog">Set the polling time</string>
+    <string name="settings_update_cache">Buffered values</string>
+    <string name="settings_update_cache_description">Set the number of buffered values for the service</string>
+    <string name="settings_update_cache_dialog">Set the number of buffered values</string>
+    <string name="settings_service_at_boot">Service at boot</string>
+    <string name="settings_service_at_boot_description">If enable the service will start at boot</string>
+
 
 
 </resources>

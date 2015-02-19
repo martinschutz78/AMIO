@@ -42,20 +42,4 @@ public class SettingsFragment extends PreferenceFragment {
 
 	}
 
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) { //called when an activity whith result ends
-		if (requestCode == DROP_PATH_OK) {
-			if (resultCode == Activity.RESULT_OK) { //if the filechooser end correctly
-				String result = data.getStringExtra("pathResult"); //store the new path in the preferences
-				EditTextPreference dropPath = (EditTextPreference) findPreference("dropPath");
-				//dropPath.setText(result);
-				dropPath.getEditText().getText().clear();
-				dropPath.getEditText().getText().append(result);
-				dropPath.getEditText().invalidate();
-			}
-		} else {
-			super.onActivityResult(requestCode, resultCode, data);
-		}
-	}
-
 }
