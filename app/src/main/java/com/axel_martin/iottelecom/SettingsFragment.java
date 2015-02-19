@@ -26,6 +26,8 @@ import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
+import android.util.Log;
 
 
 public class SettingsFragment extends PreferenceFragment {
@@ -39,6 +41,12 @@ public class SettingsFragment extends PreferenceFragment {
 
 		addPreferencesFromResource(R.xml.fragment_settings);
 
+        getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                Log.d("SETTINGS FRAGMENT", "PREFERENCE CHANGED");
+            }
+        });
 
 	}
 

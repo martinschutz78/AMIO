@@ -40,7 +40,38 @@
     <string name="settings_update_cache_dialog">Set the number of buffered values</string>
     <string name="settings_service_at_boot">Service at boot</string>
     <string name="settings_service_at_boot_description">If enable the service will start at boot</string>
-
+    <string name="settings_notification_category_header">Notifications preferences</string>
+    <string name="settings_temperature_max">Maximum temperature</string>
+    <string name="settings_temperature_max_description">Raise a notification if the temperature is above</string>
+    <string name="settings_temperature_max_dialog">Set the maximum temperature</string>
+    <string name="settings_temperature_min">Minimum temperature</string>
+    <string name="settings_temperature_min_description">Raise a notification if the temperature is below</string>
+    <string name="settings_temperature_min_dialog">Set the minimum temperature</string>
+    <string name="settings_temperature_enable">Temperature alert</string>
+    <string name="settings_temperature_enable_description">Raise a notification if temperature is out of bound</string>
+    <string name="settings_light">Light variation</string>
+    <string name="settings_light_description">Raise a notification if the light varies more than this value</string>
+    <string name="settings_light_dialog">Set the light variation</string>
+    <string name="settings_light_enable">Light alert</string>
+    <string name="settings_light_enable_description">Raise a notification if light is turned on or off</string>
+    <string name="settings_time_start">Start time</string>
+    <string name="settings_time_start_description">Set the hour when notifications are enabled</string>
+    <string name="settings_time_start_dialog">Set the start hour</string>
+    <string name="settings_time_end">End time</string>
+    <string name="settings_time_end_description">Set the hour when notifications are disabled</string>
+    <string name="settings_time_end_dialog">Set the end hour</string>
+    <string name="settings_time_enable">Scheduled alert</string>
+    <string name="settings_time_enable_description">If enable notifications will only be raised during the hours set below</string>
+    <string name="settings_mail_enable">Mail alert</string>
+    <string name="settings_mail_enable_description">If enable notifications will be send by mail</string>
+    <string name="settings_mail">Mail address</string>
+    <string name="settings_mail_description">Set the mail address to send notifications</string>
+    <string name="settings_mail_dialog">Set the mail address</string>
+    <string name="settings_sms_enable">Sms alert</string>
+    <string name="settings_sms_enable_description">If enable notifications will be send by sms</string>
+    <string name="settings_sms">Telephone number</string>
+    <string name="settings_sms_description">Set the telephone number to send notifications</string>
+    <string name="settings_sms_dialog">Set the telephone number</string>
 
 
 </resources>
