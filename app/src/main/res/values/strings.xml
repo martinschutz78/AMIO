@@ -49,6 +49,11 @@
     <string name="settings_temperature_min_dialog">Set the minimum temperature</string>
     <string name="settings_temperature_enable">Temperature alert</string>
     <string name="settings_temperature_enable_description">Raise a notification if temperature is out of bound</string>
+    <string name="settings_light">Light variation</string>
+    <string name="settings_light_description">Raise a notification if the light varies more than this value</string>
+    <string name="settings_light_dialog">Set the light variation</string>
+    <string name="settings_light_enable">Light alert</string>
+    <string name="settings_light_enable_description">Raise a notification if light is turned on or off</string>
 
 
 

@@ -56,5 +56,16 @@
             android:title="@string/settings_temperature_min"
             android:summary="@string/settings_temperature_min_description"
             android:dialogTitle="@string/settings_temperature_min_dialog"/>
+        <SwitchPreference
+            android:key="isLightEnable"
+            android:title="@string/settings_light_enable"
+            android:summary="@string/settings_light_enable_description"
+            />
+        <com.axel_martin.iottelecom.GUI.LightPickerPreference
+            android:key="maximumTemperature"
+            android:dependency="isLightEnable"
+            android:title="@string/settings_light"
+            android:summary="@string/settings_light_description"
+            android:dialogTitle="@string/settings_light_dialog"/>
     </PreferenceCategory>
 </PreferenceScreen>
