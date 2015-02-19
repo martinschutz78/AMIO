@@ -37,4 +37,24 @@
             android:summary="@string/settings_service_at_boot_description"
             />
     </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/settings_notification_category_header">
+        <SwitchPreference
+            android:key="isTemperatureEnable"
+            android:title="@string/settings_temperature_enable"
+            android:summary="@string/settings_temperature_enable_description"
+            />
+        <com.axel_martin.iottelecom.GUI.TemperaturePickerPreference
+            android:key="maximumTemperature"
+            android:dependency="isTemperatureEnable"
+            android:title="@string/settings_temperature_max"
+            android:summary="@string/settings_temperature_max_description"
+            android:dialogTitle="@string/settings_temperature_max_dialog"/>
+        <com.axel_martin.iottelecom.GUI.TemperaturePickerPreference
+            android:key="minimumTemperature"
+            android:dependency="isTemperatureEnable"
+            android:title="@string/settings_temperature_min"
+            android:summary="@string/settings_temperature_min_description"
+            android:dialogTitle="@string/settings_temperature_min_dialog"/>
+    </PreferenceCategory>
 </PreferenceScreen>
