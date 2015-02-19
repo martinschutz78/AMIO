@@ -54,7 +54,14 @@
     <string name="settings_light_dialog">Set the light variation</string>
     <string name="settings_light_enable">Light alert</string>
     <string name="settings_light_enable_description">Raise a notification if light is turned on or off</string>
-
+    <string name="settings_time_start">Start time</string>
+    <string name="settings_time_start_description">Set the hour when notifications are enabled</string>
+    <string name="settings_time_start_dialog">Set the start hour</string>
+    <string name="settings_time_end">End time</string>
+    <string name="settings_time_end_description">Ste the hour when notifications are disabled</string>
+    <string name="settings_time_end_dialog">Set the end hour</string>
+    <string name="settings_time_enable">Schedulded alert</string>
+    <string name="settings_time_enable_description">If enable notifications will only be raised during the hours set below</string>
 
 
 </resources>

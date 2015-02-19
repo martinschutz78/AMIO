@@ -67,5 +67,22 @@
             android:title="@string/settings_light"
             android:summary="@string/settings_light_description"
             android:dialogTitle="@string/settings_light_dialog"/>
+        <SwitchPreference
+            android:key="isTimeEnable"
+            android:title="@string/settings_time_enable"
+            android:summary="@string/settings_time_enable_description"
+            />
+        <com.axel_martin.iottelecom.GUI.TimePickerPreference
+            android:key="startTime"
+            android:dependency="isTimeEnable"
+            android:title="@string/settings_time_start"
+            android:summary="@string/settings_time_start_description"
+            android:dialogTitle="@string/settings_time_start_dialog"/>
+        <com.axel_martin.iottelecom.GUI.TimePickerPreference
+            android:key="endTime"
+            android:dependency="isTimeEnable"
+            android:title="@string/settings_time_end"
+            android:summary="@string/settings_time_end_description"
+            android:dialogTitle="@string/settings_time_end_dialog"/>
     </PreferenceCategory>
 </PreferenceScreen>
