@@ -134,6 +134,28 @@ public class DataService extends Service {
     };
 
     @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Bundle bundle = intent.getExtras();
+        Log.d("DATA SERVICE", "START COMMAND");
+        interval = bundle.getInt(POLLING_REF)*MINUTE_IN_MILLIS;
+        cache = bundle.getInt(CACHE_REF);
+        isTemperature = bundle.getBoolean(IS_TEMPERATURE_ALERT_REF);
+        minTemperatureTrigger = bundle.getInt(MIN_TEMPERATURE_REF);
+        maxTemperatureTrigger = bundle.getInt(MAX_TEMPERATURE_REF);
+        isLight = bundle.getBoolean(IS_LIGHT_ALERT_REF);
+        lightTtrigger = bundle.getInt(LIGHT_REF);
+        isSchedulded = bundle.getBoolean(SCHEDULDED_REF);
+        startTime = bundle.getString(START_TIME_REF);
+        endTime = bundle.getString(END_TIME_REF);
+        isMail = bundle.getBoolean(MAIL_REF);
+        mailAddress = bundle.getString(MAIL_ADDRESS_REF);
+        isSms = bundle.getBoolean(SMS_REF);
+        smsAddress = bundle.getString(SMS_ADDRESS_REF);
+        //return super.onStartCommand(intent, flags, startId);
+        return START_REDELIVER_INTENT;
+    }
+
+    @Override
     public void onCreate() {
         super.onCreate();
         measures = new ArrayList<>();
@@ -154,10 +176,12 @@ public class DataService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
+        Log.d("SERVICE", "ONBIND");
         return null;
     }
 
     public void myStartService(){
+        Log.d("SERVICE", "Starting service...");
         timer = new Timer();
         createNotify();
         startTimer(interval);
@@ -295,6 +319,7 @@ public class DataService extends Service {
             measures.remove(measures.size()-1);
         }
         measures.add(measure);
+        Log.d("SERVICE", "ADD MEASURE : "+String.valueOf(measures.size()));
     }
 
     public void flushMeasures(){
