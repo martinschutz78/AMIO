@@ -58,6 +58,7 @@ public class DataService extends Service {
     private String smsAddress = "";
 
 
+    public static final String DATA_SERVICE = "com.axel_martin.iottelecom.DATA_SERVICE";
     private static final int MINUTE_IN_MILLIS = 60000;
     public static final String POLLING_REF = "pollingTime";
     public static final String CACHE_REF = "cacheValue";
@@ -151,6 +152,7 @@ public class DataService extends Service {
         mailAddress = bundle.getString(MAIL_ADDRESS_REF);
         isSms = bundle.getBoolean(SMS_REF);
         smsAddress = bundle.getString(SMS_ADDRESS_REF);
+
         //return super.onStartCommand(intent, flags, startId);
         return START_REDELIVER_INTENT;
     }
@@ -184,6 +186,7 @@ public class DataService extends Service {
         Log.d("SERVICE", "Starting service...");
         timer = new Timer();
         myNotifyer = new MyNotifier(this);
+        startForeground(1, myNotifyer.createPermanentNotify());
         startTimer(interval);
     }
 

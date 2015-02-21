@@ -1,5 +1,6 @@
 package com.axel_martin.iottelecom.utils;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -27,7 +28,7 @@ public class MyNotifier {
         createPermanentNotify();
     }
 
-    public void createPermanentNotify(){
+    public Notification createPermanentNotify(){
 
         // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(context, MainActivity.class);
@@ -64,8 +65,7 @@ public class MyNotifier {
                 .setOngoing(true)
                 .addAction(R.drawable.abc_ic_clear_mtrl_alpha, context.getResources().getString(R.string.Terminate), pendingIntentTerminate);
 
-        //Add notification and it's id to the manager
-        notificationManager.notify(1, started.build());
+        return started.build();
     }
 
     public void createLightNotify(double mote, boolean important) {
