@@ -2,6 +2,7 @@ package com.axel_martin.iottelecom.utils;
 
 import android.os.AsyncTask;
 
+import com.axel_martin.iottelecom.MainActivity;
 import com.axel_martin.iottelecom.MainFragment;
 import com.axel_martin.iottelecom.model.Info;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,9 +15,9 @@ import java.io.IOException;
  */
 public class ParserInfoAsyncTask extends AsyncTask<String, String, Info> {
 
-    private MainFragment mainFragment;
+    private MainActivity mainFragment;
 
-    public ParserInfoAsyncTask(MainFragment mainFragment){
+    public ParserInfoAsyncTask(MainActivity mainFragment){
         this.mainFragment=mainFragment;
     }
 
@@ -38,5 +39,6 @@ public class ParserInfoAsyncTask extends AsyncTask<String, String, Info> {
     protected void onPostExecute(Info info) {
         super.onPostExecute(info);
         mainFragment.updateInfoFinishParsing(info);
+        mainFragment.sendFirstFlush();
     }
 }

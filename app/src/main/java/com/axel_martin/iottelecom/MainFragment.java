@@ -97,9 +97,10 @@ public class MainFragment extends Fragment {
         Log.d("MainFragment", "Activity created");
         progress.setVisibility(View.VISIBLE);
         rootLinear.setVisibility(View.GONE);
-            updateInfo();
-            Intent intentFirstFlush = new Intent("com.axel_martin.iottelecom.MainActivity.FIRST");
-            getActivity().sendBroadcast(intentFirstFlush);
+        if(model.getInfo() != null){
+            update();
+        }
+
     }
 
     public void update(){
@@ -212,20 +213,6 @@ public class MainFragment extends Fragment {
         rootLinear.setVisibility(View.VISIBLE);
         rootLinear.setRefreshing(false);
         rootLinear.invalidate();
-    }
-
-    public void updateInfo(){
-        HttpGetAsyncTask httpInfoTask = new HttpGetAsyncTask(this, HttpGetAsyncTask.INFO);
-        httpInfoTask.execute("http://iotlab.telecomnancy.eu/rest/info/motes");
-    }
-
-    public void updateInfoToParse(String info){
-        ParserInfoAsyncTask parserInfoTask = new ParserInfoAsyncTask(this);
-        parserInfoTask.execute(info);
-    }
-
-    public void updateInfoFinishParsing(Info info){
-        model.setInfo(info);
     }
 
 }

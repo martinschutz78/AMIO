@@ -22,7 +22,9 @@ package com.axel_martin.iottelecom;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
+
 
 /**
  * A {@link android.preference.PreferenceActivity} that presents a set of application settings. On
@@ -37,6 +39,8 @@ import android.view.MenuItem;
  */
 public class SettingsActivity extends ActionBarActivity {
 
+    private SettingsFragment settingsFragment;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -45,8 +49,8 @@ public class SettingsActivity extends ActionBarActivity {
 		Toolbar toolbar = (Toolbar) findViewById(R.id.settings_toolbar);
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-		getFragmentManager().beginTransaction().replace(R.id.settings_frame, new SettingsFragment()).commit();
+        settingsFragment = new SettingsFragment();
+		getFragmentManager().beginTransaction().replace(R.id.settings_frame, settingsFragment).commit();
 	}
 
 	@Override
@@ -59,4 +63,18 @@ public class SettingsActivity extends ActionBarActivity {
 		return true;
 	}
 
+    @Override
+    public void onBackPressed() {
+        Log.d("SETTINGS ACTIVITY", "On Back Pressed");
+        if(settingsFragment.isModified()){
+            setResult(MainActivity.SETTINGS_CHANGED);
+            Log.d("SETTINGS ACTIVITY", "settings changed");
+            finish();
+        } else {
+            setResult(MainActivity.SETTINGS_UNCHANGED);
+            Log.d("SETTINGS ACTIVITY", "settings unchanged");
+            finish();
+        }
+        super.onBackPressed();
+    }
 }

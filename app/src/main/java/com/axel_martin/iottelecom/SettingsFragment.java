@@ -26,12 +26,13 @@ import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
+import android.util.Log;
 
 
 public class SettingsFragment extends PreferenceFragment {
 
-	static final int DROP_PATH_OK = 1000;
-	private SharedPreferences sharedPreferences; //preferences of the app
+    private boolean isModified = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -39,23 +40,21 @@ public class SettingsFragment extends PreferenceFragment {
 
 		addPreferencesFromResource(R.xml.fragment_settings);
 
+        getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                Log.d("SETTINGS FRAGMENT", "PREFERENCE CHANGED");
+                isModified = true;
+            }
+        });
 
 	}
 
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) { //called when an activity whith result ends
-		if (requestCode == DROP_PATH_OK) {
-			if (resultCode == Activity.RESULT_OK) { //if the filechooser end correctly
-				String result = data.getStringExtra("pathResult"); //store the new path in the preferences
-				EditTextPreference dropPath = (EditTextPreference) findPreference("dropPath");
-				//dropPath.setText(result);
-				dropPath.getEditText().getText().clear();
-				dropPath.getEditText().getText().append(result);
-				dropPath.getEditText().invalidate();
-			}
-		} else {
-			super.onActivityResult(requestCode, resultCode, data);
-		}
-	}
+    public boolean isModified() {
+        return isModified;
+    }
 
+    public void setModified(boolean isModified) {
+        this.isModified = isModified;
+    }
 }

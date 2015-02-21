@@ -43,6 +43,36 @@ public class DataService extends Service {
 
     private Timer timer;
     private int interval = 60000;
+    private int cache = 10;
+    private boolean isTemperature = false;
+    private int minTemperatureTrigger = -1;
+    private int maxTemperatureTrigger = -1;
+    private boolean isLight = false;
+    private int lightTtrigger = -1;
+    private boolean isSchedulded = false;
+    private String startTime = "";
+    private String endTime ="";
+    private boolean isMail = false;
+    private String mailAddress = "";
+    private boolean isSms = false;
+    private String smsAddress = "";
+
+
+    private static final int MINUTE_IN_MILLIS = 60000;
+    public static final String POLLING_REF = "pollingTime";
+    public static final String CACHE_REF = "cacheValue";
+    public static final String IS_TEMPERATURE_ALERT_REF = "temperatureBoolean";
+    public static final String MAX_TEMPERATURE_REF = "maxTemperature";
+    public static final String MIN_TEMPERATURE_REF = "minTemperature";
+    public static final String IS_LIGHT_ALERT_REF = "lightBoolean";
+    public static final String LIGHT_REF = "light";
+    public static final String SCHEDULDED_REF = "scheduldedBoolean";
+    public static final String START_TIME_REF = "startTime";
+    public static final String END_TIME_REF = "endTime";
+    public static final String MAIL_REF = "mailBoolean";
+    public static final String MAIL_ADDRESS_REF = "mailAddress";
+    public static final String SMS_REF = "smsBoolean";
+    public static final String SMS_ADDRESS_REF = "smsAddress";
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
 
@@ -60,12 +90,17 @@ public class DataService extends Service {
         public void onReceive(Context context, Intent intent) {
             Bundle bundle = intent.getExtras();
             Log.d("CATCH", "CATCH FIRST BROADCAST");
-            try {
-                updateData();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            if(measures.size()>0){
+                sendMeasures();
+                flushMeasures();
+            } else {
+                try {
+                    updateData();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     };
@@ -75,11 +110,50 @@ public class DataService extends Service {
         @Override
         public void onReceive(Context context, Intent intent) {
             Bundle bundle = intent.getExtras();
+            Log.d("DATA SERVICE", "UPDATE SERVICE");
+            interval = bundle.getInt(POLLING_REF)*MINUTE_IN_MILLIS;
+            cache = bundle.getInt(CACHE_REF);
+            isTemperature = bundle.getBoolean(IS_TEMPERATURE_ALERT_REF);
+            minTemperatureTrigger = bundle.getInt(MIN_TEMPERATURE_REF);
+            maxTemperatureTrigger = bundle.getInt(MAX_TEMPERATURE_REF);
+            isLight = bundle.getBoolean(IS_LIGHT_ALERT_REF);
+            lightTtrigger = bundle.getInt(LIGHT_REF);
+            isSchedulded = bundle.getBoolean(SCHEDULDED_REF);
+            startTime = bundle.getString(START_TIME_REF);
+            endTime = bundle.getString(END_TIME_REF);
+            isMail = bundle.getBoolean(MAIL_REF);
+            mailAddress = bundle.getString(MAIL_ADDRESS_REF);
+            isSms = bundle.getBoolean(SMS_REF);
+            smsAddress = bundle.getString(SMS_ADDRESS_REF);
+
             timer.cancel();
             timer.purge();
-            startTimer(interval);
+            myStartService();
+            //startTimer(interval);
         }
     };
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Bundle bundle = intent.getExtras();
+        Log.d("DATA SERVICE", "START COMMAND");
+        interval = bundle.getInt(POLLING_REF)*MINUTE_IN_MILLIS;
+        cache = bundle.getInt(CACHE_REF);
+        isTemperature = bundle.getBoolean(IS_TEMPERATURE_ALERT_REF);
+        minTemperatureTrigger = bundle.getInt(MIN_TEMPERATURE_REF);
+        maxTemperatureTrigger = bundle.getInt(MAX_TEMPERATURE_REF);
+        isLight = bundle.getBoolean(IS_LIGHT_ALERT_REF);
+        lightTtrigger = bundle.getInt(LIGHT_REF);
+        isSchedulded = bundle.getBoolean(SCHEDULDED_REF);
+        startTime = bundle.getString(START_TIME_REF);
+        endTime = bundle.getString(END_TIME_REF);
+        isMail = bundle.getBoolean(MAIL_REF);
+        mailAddress = bundle.getString(MAIL_ADDRESS_REF);
+        isSms = bundle.getBoolean(SMS_REF);
+        smsAddress = bundle.getString(SMS_ADDRESS_REF);
+        //return super.onStartCommand(intent, flags, startId);
+        return START_REDELIVER_INTENT;
+    }
 
     @Override
     public void onCreate() {
@@ -96,15 +170,18 @@ public class DataService extends Service {
         unregisterReceiver(firstReceiver);
         unregisterReceiver(receiver);
         myNotifyer.cancelAll();
+        unregisterReceiver(updateReceiver);
         super.onDestroy();
     }
 
     @Override
     public IBinder onBind(Intent intent) {
+        Log.d("SERVICE", "ONBIND");
         return null;
     }
 
     public void myStartService() {
+        Log.d("SERVICE", "Starting service...");
         timer = new Timer();
         myNotifyer = new MyNotifier(this);
         startTimer(interval);
@@ -116,9 +193,7 @@ public class DataService extends Service {
                                       public void run() {
                                           try {
                                               updateData();
-                                          } catch (ExecutionException e) {
-                                              e.printStackTrace();
-                                          } catch (InterruptedException e) {
+                                          } catch (Exception e) {
                                               e.printStackTrace();
                                           }
                                       }
@@ -183,13 +258,13 @@ public class DataService extends Service {
         parser.execute(result);
 
         addMeasure(parser.get());
+        sendMeasures();
+    }
 
-
+    public void sendMeasures(){
         Intent intent = new Intent("com.axel_martin.iottelecom");
         intent.putExtra("RESULT", measures);
         sendBroadcast(intent);
-
-
     }
 
     private void checkTriggers(Measure measure) {
@@ -237,7 +312,7 @@ public class DataService extends Service {
     }
 
     public void addMeasure(Measure measure){
-        if(measures.size()>10){
+        if(measures.size()>cache){
             measures.remove(0);
             for(int i=0; i<measures.size()-1;i++){
                 measures.set(i, measures.get(i+1));
@@ -245,6 +320,7 @@ public class DataService extends Service {
             measures.remove(measures.size()-1);
         }
         measures.add(measure);
+        Log.d("SERVICE", "ADD MEASURE : "+String.valueOf(measures.size()));
     }
 
     public void flushMeasures(){
