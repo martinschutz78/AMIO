@@ -58,7 +58,6 @@ public class DataService extends Service {
     private String smsAddress = "";
 
 
-    public static final String DATA_SERVICE = "com.axel_martin.iottelecom.DATA_SERVICE";
     private static final int MINUTE_IN_MILLIS = 60000;
     public static final String POLLING_REF = "pollingTime";
     public static final String CACHE_REF = "cacheValue";
@@ -67,7 +66,7 @@ public class DataService extends Service {
     public static final String MIN_TEMPERATURE_REF = "minTemperature";
     public static final String IS_LIGHT_ALERT_REF = "lightBoolean";
     public static final String LIGHT_REF = "light";
-    public static final String SCHEDULDED_REF = "scheduldedBoolean";
+    public static final String SCHEDULED_REF = "scheduledBoolean";
     public static final String START_TIME_REF = "startTime";
     public static final String END_TIME_REF = "endTime";
     public static final String MAIL_REF = "mailBoolean";
@@ -119,7 +118,7 @@ public class DataService extends Service {
             maxTemperatureTrigger = bundle.getInt(MAX_TEMPERATURE_REF);
             isLight = bundle.getBoolean(IS_LIGHT_ALERT_REF);
             lightTtrigger = bundle.getInt(LIGHT_REF);
-            isSchedulded = bundle.getBoolean(SCHEDULDED_REF);
+            isSchedulded = bundle.getBoolean(SCHEDULED_REF);
             startTime = bundle.getString(START_TIME_REF);
             endTime = bundle.getString(END_TIME_REF);
             isMail = bundle.getBoolean(MAIL_REF);
@@ -134,6 +133,17 @@ public class DataService extends Service {
         }
     };
 
+
+    private BroadcastReceiver terminateReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d("DATA SERVICE", "STOP COMMAND");
+            timer.cancel();
+            timer.purge();
+            stopSelf();
+        }
+    };
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Bundle bundle = intent.getExtras();
@@ -145,7 +155,7 @@ public class DataService extends Service {
         maxTemperatureTrigger = bundle.getInt(MAX_TEMPERATURE_REF);
         isLight = bundle.getBoolean(IS_LIGHT_ALERT_REF);
         lightTtrigger = bundle.getInt(LIGHT_REF);
-        isSchedulded = bundle.getBoolean(SCHEDULDED_REF);
+        isSchedulded = bundle.getBoolean(SCHEDULED_REF);
         startTime = bundle.getString(START_TIME_REF);
         endTime = bundle.getString(END_TIME_REF);
         isMail = bundle.getBoolean(MAIL_REF);
@@ -153,8 +163,8 @@ public class DataService extends Service {
         isSms = bundle.getBoolean(SMS_REF);
         smsAddress = bundle.getString(SMS_ADDRESS_REF);
 
-        //return super.onStartCommand(intent, flags, startId);
-        return START_REDELIVER_INTENT;
+        return super.onStartCommand(intent, flags, startId);
+        //return START_REDELIVER_INTENT;
     }
 
     @Override
@@ -164,6 +174,7 @@ public class DataService extends Service {
         registerReceiver(firstReceiver, new IntentFilter("com.axel_martin.iottelecom.MainActivity.FIRST"));
         registerReceiver(receiver, new IntentFilter("com.axel_martin.iottelecom.MainActivity.FLUSH"));
         registerReceiver(updateReceiver, new IntentFilter("com.axel_martin.iottelecom.MainActivity.UPDATE"));
+        registerReceiver(terminateReceiver, new IntentFilter("com.axel_martin.iottelecom.MyNotifier.STOP"));
         myStartService();
     }
 
@@ -173,6 +184,7 @@ public class DataService extends Service {
         unregisterReceiver(receiver);
         myNotifyer.cancelAll();
         unregisterReceiver(updateReceiver);
+        unregisterReceiver(terminateReceiver);
         super.onDestroy();
     }
 
@@ -358,11 +370,11 @@ public class DataService extends Service {
         return sb.toString();
     }
 
-    @Override
-    public boolean stopService(Intent name) {
-        timer.cancel();
-        timer.purge();
-        Log.d("DATA SERVICE", "THE STOP SERVICE HAS BEEN CALLED");
-        return super.stopService(name);
-    }
+//    @Override
+//    public boolean stopService(Intent name) {
+//        timer.cancel();
+//        timer.purge();
+//        Log.d("DATA SERVICE", "THE STOP SERVICE HAS BEEN CALLED");
+//        return super.stopService(name);
+//    }
 }

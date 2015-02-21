@@ -107,7 +107,7 @@ public class MainActivity extends ActionBarActivity
         serviceIntent.putExtra(DataService.MIN_TEMPERATURE_REF, preferences.getInt("minimumTemperature", -1));
         serviceIntent.putExtra(DataService.IS_LIGHT_ALERT_REF, preferences.getBoolean("isLightEnable", false));
         serviceIntent.putExtra(DataService.LIGHT_REF, preferences.getInt("light", -1));
-        serviceIntent.putExtra(DataService.SCHEDULDED_REF, preferences.getBoolean("isTimeEnable", false));
+        serviceIntent.putExtra(DataService.SCHEDULED_REF, preferences.getBoolean("isTimeEnable", false));
         serviceIntent.putExtra(DataService.START_TIME_REF, preferences.getString("startTime", ""));
         serviceIntent.putExtra(DataService.END_TIME_REF, preferences.getString("endTime", ""));
         serviceIntent.putExtra(DataService.MAIL_REF, preferences.getBoolean("isMailEnable", false));
@@ -348,7 +348,7 @@ public class MainActivity extends ActionBarActivity
         intentUpdateInfo.putExtra(DataService.MIN_TEMPERATURE_REF, preferences.getInt("minimumTemperature", -1));
         intentUpdateInfo.putExtra(DataService.IS_LIGHT_ALERT_REF, preferences.getBoolean("isLightEnable", false));
         intentUpdateInfo.putExtra(DataService.LIGHT_REF, preferences.getInt("light", -1));
-        intentUpdateInfo.putExtra(DataService.SCHEDULDED_REF, preferences.getBoolean("isTimeEnable", false));
+        intentUpdateInfo.putExtra(DataService.SCHEDULED_REF, preferences.getBoolean("isTimeEnable", false));
         intentUpdateInfo.putExtra(DataService.START_TIME_REF, preferences.getString("startTime", ""));
         intentUpdateInfo.putExtra(DataService.END_TIME_REF, preferences.getString("endTime", ""));
         intentUpdateInfo.putExtra(DataService.MAIL_REF, preferences.getBoolean("isMailEnable", false));

@@ -32,8 +32,8 @@ public class MyNotifier {
 
         // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(context, MainActivity.class);
-        Intent deleteIntent = new Intent(context, TerminateService.class);
-        PendingIntent pendingIntentTerminate = PendingIntent.getBroadcast(context, 0, deleteIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent stopIntent = new Intent("com.axel_martin.iottelecom.MyNotifier.STOP");
+        PendingIntent pendingIntentTerminate = PendingIntent.getBroadcast(context, 0, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // The stack builder object will contain an artificial back stack for the
         // started Activity.

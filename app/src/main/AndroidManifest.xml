@@ -35,13 +35,7 @@
         <service
             android:name=".DataService"
             android:exported="false"
-            android:enabled="true">
-            <intent-filter>
-                <action android:name="com.axel_martin.iottelecom.DATA_SERVICE"/>
-            </intent-filter>
-        </service>
-
-        <receiver android:name=".utils.TerminateService" />
+            android:enabled="true"/>
 
     </application>
 

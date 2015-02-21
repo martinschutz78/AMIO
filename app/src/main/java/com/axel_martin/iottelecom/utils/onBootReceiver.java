@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.axel_martin.iottelecom.DataService;
@@ -27,7 +26,7 @@ public class onBootReceiver  extends BroadcastReceiver{
             serviceIntent.putExtra(DataService.MIN_TEMPERATURE_REF, preferences.getInt("minimumTemperature", -1));
             serviceIntent.putExtra(DataService.IS_LIGHT_ALERT_REF, preferences.getBoolean("isLightEnable", false));
             serviceIntent.putExtra(DataService.LIGHT_REF, preferences.getInt("light", -1));
-            serviceIntent.putExtra(DataService.SCHEDULDED_REF, preferences.getBoolean("isTimeEnable", false));
+            serviceIntent.putExtra(DataService.SCHEDULED_REF, preferences.getBoolean("isTimeEnable", false));
             serviceIntent.putExtra(DataService.START_TIME_REF, preferences.getString("startTime", ""));
             serviceIntent.putExtra(DataService.END_TIME_REF, preferences.getString("endTime", ""));
             serviceIntent.putExtra(DataService.MAIL_REF, preferences.getBoolean("isMailEnable", false));
