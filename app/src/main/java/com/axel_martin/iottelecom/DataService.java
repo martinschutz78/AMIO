@@ -283,42 +283,36 @@ public class DataService extends Service {
     }
 
     private void checkTriggers(Measure measure) {
-        if (lastMeasure != null) {
-            for (int i = 0; i < measure.getData().size(); i++) {
+        for (int i = 0; i < measure.getData().size(); i++) {
+            if (lastMeasure != null) {
                 for (int j = 0; j < lastMeasure.getData().size(); j++) {
                     if (measure.getData().get(i).getMote() == lastMeasure.getData().get(j).getMote()) {
 
                         //Lumix trigger
-                        if (measure.getData().get(i).getLabel().equals(JsonLabels.LIGHT1) && lastMeasure.getData().get(j).getLabel().equals(JsonLabels.LIGHT1)) {
+                        if (isLight && measure.getData().get(i).getLabel().equals(JsonLabels.LIGHT1) && lastMeasure.getData().get(j).getLabel().equals(JsonLabels.LIGHT1)) {
 
-                            //Debug
-                            myNotifyer.createLightNotify(2.5, true);
-                            if (measure.getData().get(i).getValue() == lastMeasure.getData().get(j).getValue()) {
-                                Log.d("same value", "true");
-                            } else {
-                                Log.d("same value", "false");
-                            }
-
-                            if (measure.getData().get(i).getValue() - lastMeasure.getData().get(j).getValue() >= lumixDelta) {
-                                myNotifyer.createLightNotify(measure.getData().get(i).getMote(), true);
-                            }
-                        }
-
-                        //Temperature trigger
-                        if (measure.getData().get(i).getLabel().equals(JsonLabels.TEMPERATURE) && lastMeasure.getData().get(j).getLabel().equals(JsonLabels.TEMPERATURE)) {
-
-                            //Debug
-                            myNotifyer.createTemperatureNotify(2.5, true);
-                            if (measure.getData().get(i).getValue() == lastMeasure.getData().get(j).getValue()) {
-                                Log.d("same value", "true");
-                            } else {
-                                Log.d("same value", "false");
-                            }
+//                            //Debug
+//                            myNotifyer.createLightNotify(2.5, false);
+//                            if (measure.getData().get(i).getValue() == lastMeasure.getData().get(j).getValue()) {
+//                                Log.d("same value", "true");
+//                            } else {
+//                                Log.d("same value", "false");
+//                            }
 
                             if (measure.getData().get(i).getValue() - lastMeasure.getData().get(j).getValue() >= lumixDelta) {
                                 myNotifyer.createLightNotify(measure.getData().get(i).getMote(), true);
                             }
                         }
+                    }
+                }
+                //Temperature trigger
+                if (isTemperature && measure.getData().get(i).getLabel().equals(JsonLabels.TEMPERATURE)) {
+
+//                    //Debug
+//                    myNotifyer.createTemperatureNotify(2.5, false);
+
+                    if (measure.getData().get(i).getValue() <= minTemperatureTrigger || measure.getData().get(i).getValue() >= maxTemperatureTrigger) {
+                        myNotifyer.createTemperatureNotify(measure.getData().get(i).getMote(), true);
                     }
                 }
             }
