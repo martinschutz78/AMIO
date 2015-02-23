@@ -35,8 +35,6 @@ import java.util.concurrent.ExecutionException;
  */
 public class DataService extends Service {
 
-    private double lumixDelta = 75;
-
     private ArrayList<Measure> measures;
     private MyNotifier myNotifyer;
     private Measure lastMeasure;
@@ -48,8 +46,8 @@ public class DataService extends Service {
     private int minTemperatureTrigger = -1;
     private int maxTemperatureTrigger = -1;
     private boolean isLight = false;
-    private int lightTtrigger = -1;
-    private boolean isSchedulded = false;
+    private int lightTrigger = -1;
+    private boolean isScheduled = false;
     private String startTime = "";
     private String endTime ="";
     private boolean isMail = false;
@@ -117,8 +115,8 @@ public class DataService extends Service {
             minTemperatureTrigger = bundle.getInt(MIN_TEMPERATURE_REF);
             maxTemperatureTrigger = bundle.getInt(MAX_TEMPERATURE_REF);
             isLight = bundle.getBoolean(IS_LIGHT_ALERT_REF);
-            lightTtrigger = bundle.getInt(LIGHT_REF);
-            isSchedulded = bundle.getBoolean(SCHEDULED_REF);
+            lightTrigger = bundle.getInt(LIGHT_REF);
+            isScheduled = bundle.getBoolean(SCHEDULED_REF);
             startTime = bundle.getString(START_TIME_REF);
             endTime = bundle.getString(END_TIME_REF);
             isMail = bundle.getBoolean(MAIL_REF);
@@ -154,8 +152,8 @@ public class DataService extends Service {
         minTemperatureTrigger = bundle.getInt(MIN_TEMPERATURE_REF);
         maxTemperatureTrigger = bundle.getInt(MAX_TEMPERATURE_REF);
         isLight = bundle.getBoolean(IS_LIGHT_ALERT_REF);
-        lightTtrigger = bundle.getInt(LIGHT_REF);
-        isSchedulded = bundle.getBoolean(SCHEDULED_REF);
+        lightTrigger = bundle.getInt(LIGHT_REF);
+        isScheduled = bundle.getBoolean(SCHEDULED_REF);
         startTime = bundle.getString(START_TIME_REF);
         endTime = bundle.getString(END_TIME_REF);
         isMail = bundle.getBoolean(MAIL_REF);
@@ -299,7 +297,7 @@ public class DataService extends Service {
 //                                Log.d("same value", "false");
 //                            }
 
-                            if (measure.getData().get(i).getValue() - lastMeasure.getData().get(j).getValue() >= lumixDelta) {
+                            if (measure.getData().get(i).getValue() - lastMeasure.getData().get(j).getValue() >= lightTrigger) {
                                 myNotifyer.createLightNotify(measure.getData().get(i).getMote(), true);
                             }
                         }
