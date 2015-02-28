@@ -39,6 +39,8 @@ public class DataService extends Service {
     private MyNotifier myNotifyer;
     private Measure lastMeasure;
 
+    private boolean isAlreadyStarted =false;
+
     private Timer timer;
     private int interval = 60000;
     private int cache = 10;
@@ -160,6 +162,11 @@ public class DataService extends Service {
         mailAddress = bundle.getString(MAIL_ADDRESS_REF);
         isSms = bundle.getBoolean(SMS_REF);
         smsAddress = bundle.getString(SMS_ADDRESS_REF);
+        if(!isAlreadyStarted){
+            Log.d("SERVICE", "NOT ALREADY STARTED");
+            isAlreadyStarted = true;
+            myStartService();
+        }
 
         return super.onStartCommand(intent, flags, startId);
         //return START_REDELIVER_INTENT;
@@ -173,7 +180,7 @@ public class DataService extends Service {
         registerReceiver(receiver, new IntentFilter("com.axel_martin.iottelecom.MainActivity.FLUSH"));
         registerReceiver(updateReceiver, new IntentFilter("com.axel_martin.iottelecom.MainActivity.UPDATE"));
         registerReceiver(terminateReceiver, new IntentFilter("com.axel_martin.iottelecom.MyNotifier.STOP"));
-        myStartService();
+       // myStartService();
     }
 
     @Override
