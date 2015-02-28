@@ -195,7 +195,7 @@ public class DataService extends Service {
     public void myStartService() {
         Log.d("SERVICE", "Starting service...");
         timer = new Timer();
-        myNotifyer = new MyNotifier(this);
+        myNotifyer = new MyNotifier(this, mailAddress);
         startForeground(1, myNotifyer.createPermanentNotify());
         startTimer(interval);
     }
@@ -310,7 +310,7 @@ public class DataService extends Service {
 //                    myNotifyer.createTemperatureNotify(2.5, false);
 
                     if (measure.getData().get(i).getValue() <= minTemperatureTrigger || measure.getData().get(i).getValue() >= maxTemperatureTrigger) {
-                        myNotifyer.createTemperatureNotify(measure.getData().get(i).getMote(), true);
+                        myNotifyer.createTemperatureNotify(measure.getData().get(i).getMote(), false);
                     }
                 }
             }

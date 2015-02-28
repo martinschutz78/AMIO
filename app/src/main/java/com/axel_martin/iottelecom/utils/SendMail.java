@@ -4,6 +4,7 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.Date;
 import java.util.Properties;
@@ -30,38 +31,38 @@ public class SendMail extends javax.mail.Authenticator {
 
     private String _user;
     private String _pass;
-
     private String[] _to;
     private String _from;
-
     private String _port;
     private String _sport;
-
     private String _host;
-
     private String _subject;
     private String _body;
 
     private boolean _auth;
-
     private boolean _debuggable;
 
     private Multipart _multipart;
-
     private AccountManager accountManager;
 
+    private Context context;
 
-    public SendMail(Context context) {
 
-        _host = "smtp.gmail.com"; // default smtp server
-        _port = "465"; // default smtp port
-        _sport = "465"; // default socketfactory port
+    public SendMail(Context context, String dest, String subject, String body) {
 
-        _user = ""; // username
-        _pass = ""; // password
-        _from = ""; // email sent from
-        _subject = ""; // email subject
-        _body = ""; // email body
+        this.context = context;
+
+        _host = "noipmail.com"; // default smtp server
+        _port = "25";           // default smtp port
+        _sport = "25";          // default socketfactory port
+        _to = new String[1];
+        _to[0] = dest;
+
+        _user = "fowl.corporation"; // username
+        _pass = "MMCVlo6T"; // password
+        _from = "fowl.corporation@noipmail.com"; // email sent from
+        _subject = subject; // email subject
+        _body = body; // email body
 
         _debuggable = false; // debug mode on or off - default off
         _auth = true; // smtp authentication - default on
@@ -123,6 +124,7 @@ public class SendMail extends javax.mail.Authenticator {
 
             return true;
         } else {
+            Toast.makeText(context, "Failed to send email !", Toast.LENGTH_SHORT);
             return false;
         }
     }
@@ -155,9 +157,9 @@ public class SendMail extends javax.mail.Authenticator {
         }
 
         props.put("mail.smtp.port", _port);
-        props.put("mail.smtp.socketFactory.port", _sport);
-        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-        props.put("mail.smtp.socketFactory.fallback", "false");
+//        props.put("mail.smtp.socketFactory.port", _sport);
+//        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.socketFactory.fallback", "true");
 
         return props;
     }

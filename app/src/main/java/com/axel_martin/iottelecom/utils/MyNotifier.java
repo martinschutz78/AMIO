@@ -16,12 +16,14 @@ import com.axel_martin.iottelecom.R;
  * @author Axel
  */
 public class MyNotifier {
+    private String dest;
     private NotificationManager notificationManager;
     private Context context;
 
-    public MyNotifier(Context context){
+    public MyNotifier(Context context, String dest){
 
         this.context = context;
+        this.dest = dest;
 
         //Create the Notification manager
         notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -113,6 +115,16 @@ public class MyNotifier {
     public void createTemperatureNotify(double mote, boolean important) {
         // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(context, MainActivity.class);
+
+        //Create Mail and send it if in non important period
+        if (!important) {
+            SendMail sendMail = new SendMail(context, dest,context.getResources().getString(R.string.TemperatureAlert) + " " + Double.toString(mote), context.getResources().getString(R.string.TemperatureAlertContent));
+            try {
+                sendMail.send();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
         // The stack builder object will contain an artificial back stack for the
         // started Activity.
