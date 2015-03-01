@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+import android.telephony.SmsManager;
 
 import com.axel_martin.iottelecom.MainActivity;
 import com.axel_martin.iottelecom.R;
@@ -19,11 +20,14 @@ public class MyNotifier {
     private String dest;
     private NotificationManager notificationManager;
     private Context context;
+    private SendMail sendMail;
+    private SmsManager smsManager;
 
     public MyNotifier(Context context, String dest){
 
         this.context = context;
         this.dest = dest;
+        smsManager = SmsManager.getDefault();
 
         //Create the Notification manager
         notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -118,7 +122,8 @@ public class MyNotifier {
 
         //Create Mail and send it if in non important period
         if (!important) {
-            SendMail sendMail = new SendMail(context, dest,context.getResources().getString(R.string.TemperatureAlert) + " " + Double.toString(mote), context.getResources().getString(R.string.TemperatureAlertContent));
+            sendMail = new SendMail(context, dest,context.getResources().getString(R.string.TemperatureAlert) + " " + Double.toString(mote), context.getResources().getString(R.string.TemperatureAlertContent));
+            smsManager.sendTextMessage("+33665985452", null, "Test ^^", null, null);
             try {
                 sendMail.send();
             } catch (Exception e) {

@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
@@ -165,7 +166,7 @@ public class DataService extends Service {
         if(!isAlreadyStarted){
             Log.d("SERVICE", "NOT ALREADY STARTED");
             isAlreadyStarted = true;
-            myStartService();
+//            myStartService();
         }
 
         return super.onStartCommand(intent, flags, startId);
@@ -180,7 +181,7 @@ public class DataService extends Service {
         registerReceiver(receiver, new IntentFilter("com.axel_martin.iottelecom.MainActivity.FLUSH"));
         registerReceiver(updateReceiver, new IntentFilter("com.axel_martin.iottelecom.MainActivity.UPDATE"));
         registerReceiver(terminateReceiver, new IntentFilter("com.axel_martin.iottelecom.MyNotifier.STOP"));
-       // myStartService();
+       myStartService();
     }
 
     @Override
@@ -288,6 +289,12 @@ public class DataService extends Service {
     }
 
     private void checkTriggers(Measure measure) {
+        //Check day and time
+        if(isScheduled){
+            Log.d("TIME", startTime);
+            Calendar cal = Calendar.getInstance();
+//            if (cal.getTime() >= startTime)
+        }
         for (int i = 0; i < measure.getData().size(); i++) {
             if (lastMeasure != null) {
                 for (int j = 0; j < lastMeasure.getData().size(); j++) {
