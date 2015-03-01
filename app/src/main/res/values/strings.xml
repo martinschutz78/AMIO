@@ -74,6 +74,8 @@
     <string name="settings_sms">Telephone number</string>
     <string name="settings_sms_description">Set the telephone number to send notifications</string>
     <string name="settings_sms_dialog">Set the telephone number</string>
+    <string name="longitude">Longitude</string>
+    <string name="latitude">Latitude</string>
 
 
 </resources>

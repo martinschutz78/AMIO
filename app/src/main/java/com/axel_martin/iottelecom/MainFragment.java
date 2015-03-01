@@ -18,6 +18,7 @@ import com.axel_martin.iottelecom.GUI.OverviewHeaderRow;
 import com.axel_martin.iottelecom.GUI.OverviewHumidityCardRow;
 import com.axel_martin.iottelecom.GUI.OverviewLightCardRow;
 import com.axel_martin.iottelecom.GUI.OverviewMotesCardRow;
+import com.axel_martin.iottelecom.GUI.OverviewMotesHeader;
 import com.axel_martin.iottelecom.GUI.OverviewTemperatureCardRow;
 import com.axel_martin.iottelecom.model.Data;
 import com.axel_martin.iottelecom.model.Info;
@@ -119,7 +120,7 @@ public class MainFragment extends Fragment {
         temperatureTable.removeAllViews();
         humidityTable.removeAllViews();
         lightTable.removeAllViews();
-
+        motesTable.addView(new OverviewMotesHeader(this.getActivity().getApplicationContext()));
         motesNumber.setText(getResources().getString(R.string.NumberMotes) + " " + String.valueOf(model.getInfo().getMotesNb()));
         for (int i = 0; i < model.getInfo().getSink().size(); i++) {
             motesTable.addView(new OverviewMotesCardRow(
