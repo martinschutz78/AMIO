@@ -42,7 +42,7 @@ public class DataService extends Service {
     private boolean isAlreadyStarted =false;
 
     private Timer timer;
-    private int interval = 60000;
+    private int interval = 1;
     private int cache = 10;
     private boolean isTemperature = false;
     private int minTemperatureTrigger = -1;
@@ -164,7 +164,7 @@ public class DataService extends Service {
         if(!isAlreadyStarted){
             Log.d("SERVICE", "NOT ALREADY STARTED");
             isAlreadyStarted = true;
-//            myStartService();
+            myStartService();
         }
 
         return super.onStartCommand(intent, flags, startId);
@@ -179,7 +179,7 @@ public class DataService extends Service {
         registerReceiver(receiver, new IntentFilter("com.axel_martin.iottelecom.MainActivity.FLUSH"));
         registerReceiver(updateReceiver, new IntentFilter("com.axel_martin.iottelecom.MainActivity.UPDATE"));
         registerReceiver(terminateReceiver, new IntentFilter("com.axel_martin.iottelecom.MyNotifier.STOP"));
-       myStartService();
+//       myStartService();
     }
 
     @Override

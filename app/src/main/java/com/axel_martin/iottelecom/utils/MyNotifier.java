@@ -20,13 +20,13 @@ import java.util.Calendar;
  * @author Axel
  */
 public class MyNotifier {
-    private final String startTime;
-    private final String endTime;
-    private final boolean isMail;
-    private final String mailAddress;
-    private final boolean isSms;
-    private final String smsAddress;
-    private final boolean isScheduled;
+    private String startTime;
+    private String endTime;
+    private boolean isMail;
+    private String mailAddress;
+    private boolean isSms;
+    private String smsAddress;
+    private boolean isScheduled;
     private boolean important;
     private NotificationManager notificationManager;
     private Context context;
@@ -313,21 +313,22 @@ public class MyNotifier {
 
             String sTime[] = startTime.split(":");
             String eTime[] = endTime.split(":");
+            Log.d(sTime[0], sTime[1]);
+
+            Calendar now = Calendar.getInstance();
+            now.setTimeInMillis(System.currentTimeMillis());
 
             Calendar start = Calendar.getInstance();
             start.setTimeInMillis(System.currentTimeMillis());
-            start.set(Calendar.HOUR, Integer.parseInt(sTime[0]));
+            start.set(Calendar.HOUR_OF_DAY, Integer.parseInt(sTime[0]));
             start.set(Calendar.MINUTE, Integer.parseInt(sTime[1]));
 
             Calendar end = Calendar.getInstance();
-            start.setTimeInMillis(System.currentTimeMillis());
-            end.set(Calendar.HOUR, Integer.parseInt(eTime[0]));
+            end.setTimeInMillis(System.currentTimeMillis());
+            end.set(Calendar.HOUR_OF_DAY, Integer.parseInt(eTime[0]));
             end.set(Calendar.MINUTE, Integer.parseInt(eTime[1]));
 
-            Calendar now = Calendar.getInstance();
-            start.setTimeInMillis(System.currentTimeMillis());
-
-            Log.d("After", Boolean.toString(start.before(now)));
+            Log.d("Before", Boolean.toString(start.before(now)));
             if (start.before(now) && end.after(now)) {
                 return true;
             }

@@ -66,15 +66,15 @@ public class SettingsActivity extends ActionBarActivity {
     @Override
     public void onBackPressed() {
         Log.d("SETTINGS ACTIVITY", "On Back Pressed");
-        if(settingsFragment.isModified()){
+//        if(settingsFragment.isModified()){
             setResult(MainActivity.SETTINGS_CHANGED);
             Log.d("SETTINGS ACTIVITY", "settings changed");
             finish();
-        } else {
-            setResult(MainActivity.SETTINGS_UNCHANGED);
-            Log.d("SETTINGS ACTIVITY", "settings unchanged");
-            finish();
-        }
+//        } else {
+//            setResult(MainActivity.SETTINGS_UNCHANGED);
+//            Log.d("SETTINGS ACTIVITY", "settings unchanged");
+//            finish();
+//        }
         super.onBackPressed();
     }
 }
