@@ -4,7 +4,6 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.util.Date;
 import java.util.Properties;
@@ -124,7 +123,6 @@ public class SendMail extends javax.mail.Authenticator {
 
             return true;
         } else {
-            Toast.makeText(context, "Failed to send email !", Toast.LENGTH_SHORT);
             return false;
         }
     }

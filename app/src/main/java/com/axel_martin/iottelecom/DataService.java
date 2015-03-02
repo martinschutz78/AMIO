@@ -42,7 +42,7 @@ public class DataService extends Service {
     private boolean isAlreadyStarted =false;
 
     private Timer timer;
-    private int interval = 60000;
+    private int interval = 1;
     private int cache = 10;
     private boolean isTemperature = false;
     private int minTemperatureTrigger = -1;
@@ -96,9 +96,7 @@ public class DataService extends Service {
             } else {
                 try {
                     updateData();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
+                } catch (ExecutionException | InterruptedException e) {
                     e.printStackTrace();
                 }
             }
@@ -181,7 +179,7 @@ public class DataService extends Service {
         registerReceiver(receiver, new IntentFilter("com.axel_martin.iottelecom.MainActivity.FLUSH"));
         registerReceiver(updateReceiver, new IntentFilter("com.axel_martin.iottelecom.MainActivity.UPDATE"));
         registerReceiver(terminateReceiver, new IntentFilter("com.axel_martin.iottelecom.MyNotifier.STOP"));
-       // myStartService();
+//       myStartService();
     }
 
     @Override
@@ -203,7 +201,7 @@ public class DataService extends Service {
     public void myStartService() {
         Log.d("SERVICE", "Starting service...");
         timer = new Timer();
-        myNotifyer = new MyNotifier(this, mailAddress);
+        myNotifyer = new MyNotifier(this, isScheduled, startTime, endTime, isMail, mailAddress, isSms, smsAddress);
         startForeground(1, myNotifyer.createPermanentNotify());
         startTimer(interval);
     }
@@ -307,7 +305,7 @@ public class DataService extends Service {
 //                            }
 
                             if (measure.getData().get(i).getValue() - lastMeasure.getData().get(j).getValue() >= lightTrigger) {
-                                myNotifyer.createLightNotify(measure.getData().get(i).getMote(), true);
+                                myNotifyer.createLightNotify(measure.getData().get(i).getMote(), measure.getData().get(i).getValue());
                             }
                         }
                     }
@@ -319,7 +317,7 @@ public class DataService extends Service {
 //                    myNotifyer.createTemperatureNotify(2.5, false);
 
                     if (measure.getData().get(i).getValue() <= minTemperatureTrigger || measure.getData().get(i).getValue() >= maxTemperatureTrigger) {
-                        myNotifyer.createTemperatureNotify(measure.getData().get(i).getMote(), false);
+                        myNotifyer.createTemperatureNotify(measure.getData().get(i).getMote(), measure.getData().get(i).getValue());
                     }
                 }
             }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.TimePicker;
 
@@ -59,6 +60,8 @@ public class TimePickerPreference extends DialogPreference {
             if (callChangeListener(time)) {
                 persistString(time);
             }
+            Log.d("OnClose", "OnClose");
+            notifyChanged();
         }
     }
 
