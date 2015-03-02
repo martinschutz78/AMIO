@@ -149,6 +149,7 @@ public class DataService extends Service {
         Bundle bundle = intent.getExtras();
         Log.d("DATA SERVICE", "START COMMAND");
         interval = bundle.getInt(POLLING_REF)*MINUTE_IN_MILLIS;
+        Log.d("DATASERVICE", "INTERVAL = "+String.valueOf(interval));
         cache = bundle.getInt(CACHE_REF);
         isTemperature = bundle.getBoolean(IS_TEMPERATURE_ALERT_REF);
         minTemperatureTrigger = bundle.getInt(MIN_TEMPERATURE_REF);
@@ -208,6 +209,7 @@ public class DataService extends Service {
     }
 
     public void startTimer(int myInterval){
+        Log.d("DATASERVICE", "INTERVAL = "+String.valueOf(myInterval));
         timer.scheduleAtFixedRate(new TimerTask() {
                                       @Override
                                       public void run() {
