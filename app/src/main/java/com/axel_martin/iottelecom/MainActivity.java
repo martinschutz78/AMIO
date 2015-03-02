@@ -109,12 +109,12 @@ public class MainActivity extends ActionBarActivity
         Intent serviceIntent = new Intent(this, DataService.class);
 
         serviceIntent.putExtra(DataService.POLLING_REF, preferences.getInt("interval", 1));
-        serviceIntent.putExtra(DataService.CACHE_REF, preferences.getInt("cache", 10));
+        serviceIntent.putExtra(DataService.CACHE_REF, preferences.getInt("cache", 30));
         serviceIntent.putExtra(DataService.IS_TEMPERATURE_ALERT_REF, preferences.getBoolean("isTemperatureEnable", false));
-        serviceIntent.putExtra(DataService.MAX_TEMPERATURE_REF, preferences.getInt("maximumTemperature", 0));
-        serviceIntent.putExtra(DataService.MIN_TEMPERATURE_REF, preferences.getInt("minimumTemperature", 0));
+        serviceIntent.putExtra(DataService.MAX_TEMPERATURE_REF, preferences.getInt("maximumTemperature", 25));
+        serviceIntent.putExtra(DataService.MIN_TEMPERATURE_REF, preferences.getInt("minimumTemperature", 10));
         serviceIntent.putExtra(DataService.IS_LIGHT_ALERT_REF, preferences.getBoolean("isLightEnable", false));
-        serviceIntent.putExtra(DataService.LIGHT_REF, preferences.getInt("light", 0));
+        serviceIntent.putExtra(DataService.LIGHT_REF, preferences.getInt("light", 200));
         serviceIntent.putExtra(DataService.SCHEDULED_REF, preferences.getBoolean("isTimeEnable", false));
         serviceIntent.putExtra(DataService.START_TIME_REF, preferences.getString("startTime", ""));
         serviceIntent.putExtra(DataService.END_TIME_REF, preferences.getString("endTime", ""));
