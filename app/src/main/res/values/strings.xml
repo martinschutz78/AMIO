@@ -69,8 +69,8 @@
     <string name="settings_mail">Mail address</string>
     <string name="settings_mail_description">Set the mail address to send notifications</string>
     <string name="settings_mail_dialog">Set the mail address</string>
-    <string name="settings_sms_enable">Sms alert</string>
-    <string name="settings_sms_enable_description">If enable notifications will be send by sms</string>
+    <string name="settings_sms_enable">SMS alert</string>
+    <string name="settings_sms_enable_description">If enable notifications will be send by SMS</string>
     <string name="settings_sms">Telephone number</string>
     <string name="settings_sms_description">Set the telephone number to send notifications</string>
     <string name="settings_sms_dialog">Set the telephone number</string>

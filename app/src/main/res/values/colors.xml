@@ -12,6 +12,7 @@
     <color name="colorBackground">#ffbdbdbd</color>
     <color name="colorBackgroundNavigation">@color/background_material_light</color>
     <color name="colorSeparationNavigation">@color/colorPrimaryDark_Light</color>
+    <color name="colorBackgroundCard">#bdbdbd</color>
 
     <color name="yellow">#FFFF00</color>
     <color name="fuchsia">#FF00FF</color>

@@ -22,6 +22,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.axel_martin.iottelecom.GUI.CustomDrawerAdapter;
+import com.axel_martin.iottelecom.GUI.DrawerItem;
+
+import java.util.ArrayList;
+
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
  * See the <a href="https://developer.android.com/design/patterns/navigation-drawer.html#Interaction">
@@ -97,7 +102,7 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position);
             }
         });
-        mDrawerListView.setAdapter(new ArrayAdapter<String>(
+        /*mDrawerListView.setAdapter(new ArrayAdapter<String>(
                 getActivity(),
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
@@ -106,7 +111,15 @@ public class NavigationDrawerFragment extends Fragment {
                         getString(R.string.Temperature),
                         getString(R.string.Light),
                         getString(R.string.Humidity),
-                }));
+                }));*/
+
+        ArrayList dataList = new ArrayList<DrawerItem>();
+        dataList.add(new DrawerItem(getString(R.string.Overview),R.drawable.overview,true,false));
+        dataList.add(new DrawerItem(getString(R.string.Temperature),R.drawable.thermo,true,false));
+        dataList.add(new DrawerItem(getString(R.string.Light),R.drawable.light,true,false));
+        dataList.add(new DrawerItem(getString(R.string.Humidity),R.drawable.humidity,true,false));
+        CustomDrawerAdapter adapter = new CustomDrawerAdapter(getActivity(), R.layout.custom_drawer_item, dataList);//create an adapter to the ListView
+        mDrawerListView.setAdapter(adapter);
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
     }
@@ -239,11 +252,6 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-
-        if (item.getItemId() == R.id.action_example) {
-            Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT).show();
             return true;
         }
 
