@@ -26,7 +26,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
@@ -289,12 +288,6 @@ public class DataService extends Service {
     }
 
     private void checkTriggers(Measure measure) {
-        //Check day and time
-        if(isScheduled){
-            Log.d("TIME", startTime);
-            Calendar cal = Calendar.getInstance();
-//            if (cal.getTime() >= startTime)
-        }
         for (int i = 0; i < measure.getData().size(); i++) {
             if (lastMeasure != null) {
                 for (int j = 0; j < lastMeasure.getData().size(); j++) {
@@ -312,7 +305,7 @@ public class DataService extends Service {
 //                            }
 
                             if (measure.getData().get(i).getValue() - lastMeasure.getData().get(j).getValue() >= lightTrigger) {
-                                myNotifyer.createLightNotify(measure.getData().get(i).getMote(), true);
+                                myNotifyer.createLightNotify(measure.getData().get(i).getMote(), measure.getData().get(i).getValue());
                             }
                         }
                     }
@@ -324,7 +317,7 @@ public class DataService extends Service {
 //                    myNotifyer.createTemperatureNotify(2.5, false);
 
                     if (measure.getData().get(i).getValue() <= minTemperatureTrigger || measure.getData().get(i).getValue() >= maxTemperatureTrigger) {
-                        myNotifyer.createTemperatureNotify(measure.getData().get(i).getMote(), false);
+                        myNotifyer.createTemperatureNotify(measure.getData().get(i).getMote(), measure.getData().get(i).getValue());
                     }
                 }
             }
