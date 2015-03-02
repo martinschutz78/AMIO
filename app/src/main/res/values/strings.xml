@@ -25,9 +25,9 @@
     <string name="Terminate">Terminate</string>
     <string name="RunningBackground">Running background…</string>
     <string name="LightAlert">Light Alert</string>
-    <string name="LightAlertContent">Unexpected light detected !</string>
+    <string name="LightAlertContent">Unexpected light : </string>
     <string name="TemperatureAlert">Temperature Alert</string>
-    <string name="TemperatureAlertContent">Unexpected temperature detected !</string>
+    <string name="TemperatureAlertContent">Unexpected temperature : </string>
     <string name="HumidityAlert">Humidity Alert</string>
     <string name="HumidityAlertContent">Unexpected humidity detected !</string>
     <string name="MultipleAlerts">Multiple Alerts</string>

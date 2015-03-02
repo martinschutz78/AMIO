@@ -133,7 +133,7 @@ public class MyNotifier {
         //Create Notification
         NotificationCompat.Builder started = new NotificationCompat.Builder(context)
                 .setContentTitle(context.getResources().getString(R.string.LightAlert) + " " + Double.toString(mote))
-                .setContentText(context.getResources().getString(R.string.LightAlertContent) + "\n" + Double.toString(value) + "lx")
+                .setContentText(context.getResources().getString(R.string.LightAlertContent) + " " + Double.toString(value) + "lx")
                 .setContentIntent(resultPendingIntent)
                 .setSmallIcon(R.drawable.small_notification)
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.large_light_notification))
@@ -158,6 +158,7 @@ public class MyNotifier {
         Intent resultIntent = new Intent(context, MainActivity.class);
 
         important = checkImportant();
+        Log.d("mail", Boolean.toString(isMail));
 
         //Create Mail and send it if in non important period
         if (!important) {
@@ -192,10 +193,10 @@ public class MyNotifier {
         //Create Notification
         NotificationCompat.Builder started = new NotificationCompat.Builder(context)
                 .setContentTitle(context.getResources().getString(R.string.TemperatureAlert) + " " + Double.toString(mote))
-                .setContentText(context.getResources().getString(R.string.TemperatureAlertContent) + "\n" + Double.toString(value) + "°C")
+                .setContentText(context.getResources().getString(R.string.TemperatureAlertContent) + " " + Double.toString(value) + "°C")
                 .setContentIntent(resultPendingIntent)
                 .setSmallIcon(R.drawable.small_notification)
-                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.large_light_notification))
+                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.large_thermo_notification))
                 .setCategory(NotificationCompat.CATEGORY_ALARM)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setColor(context.getResources().getColor(R.color.colorPrimary_Light))
@@ -327,9 +328,13 @@ public class MyNotifier {
             end.setTimeInMillis(System.currentTimeMillis());
             end.set(Calendar.HOUR_OF_DAY, Integer.parseInt(eTime[0]));
             end.set(Calendar.MINUTE, Integer.parseInt(eTime[1]));
+            if (Integer.parseInt(eTime[0]) <= Integer.parseInt(sTime[0])) {
+                end.add(Calendar.DAY_OF_YEAR, 1);
+            }
 
-            Log.d("Before", Boolean.toString(start.before(now)));
-            if (start.before(now) && end.after(now)) {
+            Log.d("Before", Integer.toString(now.get(Calendar.DAY_OF_WEEK)));
+            Log.d("After", Integer.toString(Calendar.SUNDAY));
+            if (now.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY && start.before(now) && end.after(now)) {
                 return true;
             }
         }

@@ -51,15 +51,15 @@ public class SendMail extends javax.mail.Authenticator {
 
         this.context = context;
 
-        _host = "noipmail.com"; // default smtp server
-        _port = "25";           // default smtp port
-        _sport = "25";          // default socketfactory port
+        _host = "smtp.gmail.com"; // default smtp server
+        _port = "465";           // default smtp port
+        _sport = "465";          // default socketfactory port
         _to = new String[1];
         _to[0] = dest;
 
-        _user = "fowl.corporation"; // username
-        _pass = "MMCVlo6T"; // password
-        _from = "fowl.corporation@noipmail.com"; // email sent from
+        _user = "iot.telecom"; // username
+        _pass = "mpol85ki"; // password
+        _from = "iot.telecom@gmail.com"; // email sent from
         _subject = subject; // email subject
         _body = body; // email body
 
@@ -155,8 +155,8 @@ public class SendMail extends javax.mail.Authenticator {
         }
 
         props.put("mail.smtp.port", _port);
-//        props.put("mail.smtp.socketFactory.port", _sport);
-//        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.socketFactory.port", _sport);
+        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         props.put("mail.smtp.socketFactory.fallback", "true");
 
         return props;

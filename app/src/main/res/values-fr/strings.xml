@@ -4,13 +4,13 @@
     <string name="HumidityAlert">Alerte Humidité</string>
     <string name="HumidityAlertContent">Taux d\'humidité inattendu !</string>
     <string name="LightAlert">Alerte Lumière</string>
-    <string name="LightAlertContent">Lumière inattendue détectée !</string>
+    <string name="LightAlertContent">Lumière inattendue : </string>
     <string name="MultipleAlerts">Alertes Multiples</string>
     <string name="MultipleAlertsContent">Des évènements inattendus requièrent votre attention…</string>
     <string name="Refresh">Actualiser</string>
     <string name="RunningBackground">Fonctionne en arrière-plan…</string>
     <string name="TemperatureAlert">Alerte Température</string>
-    <string name="TemperatureAlertContent">Température inattendue détectée</string>
+    <string name="TemperatureAlertContent">Température inattendue : </string>
     <string name="Terminate">Terminer</string>
     <string name="navigation_drawer_close">Fermer le volet de navigation</string>
     <string name="navigation_drawer_open">Ouvrir le volet de navigation</string>
