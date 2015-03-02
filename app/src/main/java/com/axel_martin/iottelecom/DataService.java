@@ -97,9 +97,7 @@ public class DataService extends Service {
             } else {
                 try {
                     updateData();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
+                } catch (ExecutionException | InterruptedException e) {
                     e.printStackTrace();
                 }
             }
@@ -203,7 +201,7 @@ public class DataService extends Service {
     public void myStartService() {
         Log.d("SERVICE", "Starting service...");
         timer = new Timer();
-        myNotifyer = new MyNotifier(this, mailAddress);
+        myNotifyer = new MyNotifier(this, isScheduled, startTime, endTime, isMail, mailAddress, isSms, smsAddress);
         startForeground(1, myNotifyer.createPermanentNotify());
         startTimer(interval);
     }

@@ -17,16 +17,30 @@ import com.axel_martin.iottelecom.R;
  * @author Axel
  */
 public class MyNotifier {
-    private String dest;
+    private final String startTime;
+    private final String endTime;
+    private final boolean isMail;
+    private final String mailAddress;
+    private final boolean isSms;
+    private final String smsAddress;
+    private final boolean isScheduled;
     private NotificationManager notificationManager;
     private Context context;
     private SendMail sendMail;
     private SmsManager smsManager;
 
-    public MyNotifier(Context context, String dest){
+    public MyNotifier(Context context, boolean isScheduled, String startTime, String endTime, boolean isMail, String mailAddress, boolean isSms, String smsAddress){
 
         this.context = context;
-        this.dest = dest;
+        this.isScheduled = isScheduled;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.isMail = isMail;
+        this.mailAddress = mailAddress;
+        this.isSms = isSms;
+        this.smsAddress = smsAddress;
+
+        //Get SMSManager
         smsManager = SmsManager.getDefault();
 
         //Create the Notification manager
@@ -122,12 +136,16 @@ public class MyNotifier {
 
         //Create Mail and send it if in non important period
         if (!important) {
-            sendMail = new SendMail(context, dest,context.getResources().getString(R.string.TemperatureAlert) + " " + Double.toString(mote), context.getResources().getString(R.string.TemperatureAlertContent));
-            smsManager.sendTextMessage("+33665985452", null, "Test ^^", null, null);
-            try {
-                sendMail.send();
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (isMail) {
+                sendMail = new SendMail(context, mailAddress,context.getResources().getString(R.string.TemperatureAlert) + " " + Double.toString(mote), context.getResources().getString(R.string.TemperatureAlertContent));
+                try {
+                    sendMail.send();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (isSms) {
+                smsManager.sendTextMessage(smsAddress, null, context.getResources().getString(R.string.TemperatureAlert) + " " + Double.toString(mote) + "\n" + context.getResources().getString(R.string.TemperatureAlertContent), null, null);
             }
         }
 
