@@ -102,7 +102,6 @@ public class MainActivity extends ActionBarActivity
         SharedPreferences preferences =  PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         if(preferences.getBoolean("firstLaunch", true)){
-
             preferences.edit().putBoolean("firstLaunch", true).commit();
         }
 
@@ -112,9 +111,9 @@ public class MainActivity extends ActionBarActivity
         serviceIntent.putExtra(DataService.CACHE_REF, preferences.getInt("cache", 30));
         serviceIntent.putExtra(DataService.IS_TEMPERATURE_ALERT_REF, preferences.getBoolean("isTemperatureEnable", false));
         serviceIntent.putExtra(DataService.MAX_TEMPERATURE_REF, preferences.getInt("maximumTemperature", 25));
-        serviceIntent.putExtra(DataService.MIN_TEMPERATURE_REF, preferences.getInt("minimumTemperature", 10));
+        serviceIntent.putExtra(DataService.MIN_TEMPERATURE_REF, preferences.getInt("minimumTemperature", 14));
         serviceIntent.putExtra(DataService.IS_LIGHT_ALERT_REF, preferences.getBoolean("isLightEnable", false));
-        serviceIntent.putExtra(DataService.LIGHT_REF, preferences.getInt("light", 200));
+        serviceIntent.putExtra(DataService.LIGHT_REF, preferences.getInt("light", 50));
         serviceIntent.putExtra(DataService.SCHEDULED_REF, preferences.getBoolean("isTimeEnable", false));
         serviceIntent.putExtra(DataService.START_TIME_REF, preferences.getString("startTime", ""));
         serviceIntent.putExtra(DataService.END_TIME_REF, preferences.getString("endTime", ""));
@@ -349,13 +348,13 @@ public class MainActivity extends ActionBarActivity
         Log.d("MAIN ACTIVITY", "UPDATE SERVICE");
         Intent intentUpdateInfo = new Intent("com.axel_martin.iottelecom.MainActivity.UPDATE");
         SharedPreferences preferences =  PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        intentUpdateInfo.putExtra(DataService.POLLING_REF, preferences.getInt("interval", 60000));
+        intentUpdateInfo.putExtra(DataService.POLLING_REF, preferences.getInt("interval", 1));
         intentUpdateInfo.putExtra(DataService.CACHE_REF, preferences.getInt("cache", 10));
         intentUpdateInfo.putExtra(DataService.IS_TEMPERATURE_ALERT_REF, preferences.getBoolean("isTemperatureEnable", false));
-        intentUpdateInfo.putExtra(DataService.MAX_TEMPERATURE_REF, preferences.getInt("maximumTemperature", -1));
-        intentUpdateInfo.putExtra(DataService.MIN_TEMPERATURE_REF, preferences.getInt("minimumTemperature", -1));
+        intentUpdateInfo.putExtra(DataService.MAX_TEMPERATURE_REF, preferences.getInt("maximumTemperature", 25));
+        intentUpdateInfo.putExtra(DataService.MIN_TEMPERATURE_REF, preferences.getInt("minimumTemperature", 14));
         intentUpdateInfo.putExtra(DataService.IS_LIGHT_ALERT_REF, preferences.getBoolean("isLightEnable", false));
-        intentUpdateInfo.putExtra(DataService.LIGHT_REF, preferences.getInt("light", -1));
+        intentUpdateInfo.putExtra(DataService.LIGHT_REF, preferences.getInt("light", 50));
         intentUpdateInfo.putExtra(DataService.SCHEDULED_REF, preferences.getBoolean("isTimeEnable", false));
         intentUpdateInfo.putExtra(DataService.START_TIME_REF, preferences.getString("startTime", ""));
         intentUpdateInfo.putExtra(DataService.END_TIME_REF, preferences.getString("endTime", ""));
