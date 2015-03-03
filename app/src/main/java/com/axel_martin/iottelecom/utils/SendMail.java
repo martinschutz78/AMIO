@@ -24,7 +24,8 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 /**
- * @author Axel
+ * Jon Simon
+ * http://www.jondev.net/articles/Sending_Emails_without_User_Intervention_%28no_Intents%29_in_Android
  */
 public class SendMail extends javax.mail.Authenticator {
 
